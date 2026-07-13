@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aida Courtenay-Smith</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #ffffff;
+  --text: #6b6b6b;
+  --text-strong: #3d3d3d;
+  --text-faint: #b8b8b8;
+  --cell: #f2f2f2;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.35s ease, color 0.35s ease;
+}
+
+::selection { background: var(--cell); color: var(--text-strong); }
+
+a { color: var(--text); text-decoration: none; }
+
+/* ---------- header ---------- */
+header {
+  padding: 32px 40px 0;
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  position: relative;
+  z-index: 2;
+}
+
+header .name {
+  color: var(--text-strong);
+  font-weight: 500;
+  cursor: pointer;
+}
+header .name:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+header nav { display: flex; gap: 24px; align-items: baseline; }
+
+header nav a {
+  color: var(--text-faint);
+}
+header nav a:hover { color: var(--text-strong); }
+
+/* ---------- landing ---------- */
+#landing {
+  position: relative;
+  height: calc(100vh - 130px);
+  min-height: 480px;
+  overflow: hidden;
+}
+
+/* ---------- room ---------- */
+.room {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* floor */
+.room::before {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 28%;
+  background: var(--cell);
+}
+
+/* baseboard */
+.room::after {
+  content: '';
+  position: absolute;
+  bottom: 28%;
+  left: 0; right: 0;
+  height: 7px;
+  background: var(--text-faint);
+  opacity: 0.45;
+}
+
+/* window — pixel art SVG fills this div */
+.room-window {
+  position: absolute;
+  top: 4%;
+  left: 4%;
+  width: 180px;
+  height: 264px;
+  image-rendering: pixelated;
+  z-index: 1;
+}
+
+/* oriental rug — pixel art SVG fills this div */
+.room-rug {
+  position: absolute;
+  bottom: 0;
+  left: 4%;
+  right: 4%;
+  height: 13%;
+  image-rendering: pixelated;
+  z-index: 1;
+}
+
+/* wooden desk — writing */
+.furn-desk {
+  position: absolute;
+  left: 3%;
+  bottom: 28%;
+  width: 180px;
+  height: 84px;
+  image-rendering: pixelated;
+  z-index: 1;
+}
+
+/* entertainment center — music */
+.furn-cabinet {
+  position: absolute;
+  left: 18%;
+  bottom: 28%;
+  width: 144px;
+  height: 108px;
+  image-rendering: pixelated;
+  z-index: 1;
+}
+
+/* wall shelf — photo + video */
+.furn-shelf {
+  position: absolute;
+  left: 57%;
+  right: 5%;
+  bottom: calc(28% + 188px);
+  height: 48px;
+  image-rendering: pixelated;
+  z-index: 1;
+}
+
+.scene-obj {
+  position: absolute;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 8px;
+  bottom: 28%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.scene-obj .icon-holder { display: block; line-height: 0; }
+
+.scene-obj svg {
+  width: 88px;
+  height: auto;
+  image-rendering: pixelated;
+  shape-rendering: crispEdges;
+  transition: transform 0.2s ease;
+  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+}
+
+.scene-obj:hover svg { transform: scale(1.1) translateY(-6px); }
+
+.scene-obj svg.pop { animation: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+@keyframes pop {
+  0%   { transform: scale(1); }
+  35%  { transform: scale(1.28) rotate(-4deg); }
+  65%  { transform: scale(0.92) rotate(3deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+.scene-obj:focus-visible { outline: 1px solid var(--text-strong); outline-offset: 6px; }
+
+.scene-obj .label {
+  color: var(--text-faint);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 10px;
+  white-space: nowrap;
+  background: rgba(0,0,0,0);
+  opacity: 0;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+.scene-obj:hover .label {
+  opacity: 1;
+  color: var(--text-strong);
+  background: rgba(0,0,0,0.18);
+}
+
+/* avatar */
+.avatar {
+  position: absolute;
+  bottom: 28%;
+  left: 46%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: breathe 5s ease-in-out infinite;
+  user-select: none;
+  z-index: 2;
+}
+
+@keyframes breathe {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(-4px); }
+}
+
+.avatar svg {
+  width: 108px;
+  height: auto;
+  shape-rendering: crispEdges;
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.10));
+}
+
+.avatar svg.jump {
+  animation: jump 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform-origin: bottom center;
+}
+
+@keyframes jump {
+  0%   { transform: translateY(0) scale(1, 1); }
+  18%  { transform: translateY(3px) scale(1.1, 0.86); }
+  50%  { transform: translateY(-30px) scale(0.94, 1.1); }
+  78%  { transform: translateY(0) scale(1.06, 0.92); }
+  100% { transform: translateY(0) scale(1, 1); }
+}
+
+/* coffee cup steam */
+.avatar .steam {
+  position: absolute;
+  right: -2px;
+  bottom: 42%;
+  width: 14px;
+  height: 22px;
+  pointer-events: none;
+}
+.avatar .steam::before,
+.avatar .steam::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  width: 3px;
+  height: 6px;
+  border-radius: 2px;
+  background: rgba(220, 210, 195, 0.75);
+  animation: steamRise 2s ease-out infinite;
+  opacity: 0;
+}
+.avatar .steam::before { left: 1px; }
+.avatar .steam::after  { left: 8px; animation-delay: 0.75s; }
+
+@keyframes steamRise {
+  0%   { transform: translateY(0) scaleX(1); opacity: 0; }
+  20%  { opacity: 0.8; }
+  70%  { transform: translateY(-14px) scaleX(1.6); opacity: 0.3; }
+  100% { transform: translateY(-22px) scaleX(0.5); opacity: 0; }
+}
+
+/* scene positions */
+.scene-obj[data-cat="writing"] { left: 11%; bottom: calc(28% + 84px); }
+.scene-obj[data-cat="music"]   { left: 24%; bottom: calc(28% + 108px); }
+.scene-obj[data-cat="photo"]   { left: 50%; transform: translateX(-50%); bottom: calc(28% + 195px); }
+.scene-obj[data-cat="misc"]    { left: 85%; }
+.scene-obj[data-cat="video"]   { left: 78%; bottom: calc(28% + 236px); }
+
+/* icon size overrides */
+.scene-obj[data-cat="music"] svg  { width: 144px; }
+.scene-obj[data-cat="photo"] svg  { width: 220px; }
+
+/* ---------- work view ---------- */
+#work { display: none; }
+
+.wrap {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  padding: 72px 40px 96px;
+  gap: 64px;
+  max-width: 1280px;
+}
+
+.index .cat-label {
+  color: var(--text-faint);
+  font-size: 11px;
+  margin-bottom: 12px;
+}
+
+.index ul { list-style: none; }
+
+.index button {
+  display: block;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 2.1;
+  color: var(--text);
+  cursor: pointer;
+  text-align: left;
+}
+
+.index button:hover { color: var(--text-strong); text-decoration: underline; text-underline-offset: 3px; }
+.index button:focus-visible { outline: 1px solid var(--text-strong); outline-offset: 3px; }
+.index button.active {
+  color: var(--text-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.index .back {
+  margin-top: 32px;
+  color: var(--text-faint);
+  font-size: 12px;
+}
+.index .back:hover { color: var(--text-strong); }
+
+.detail { max-width: 720px; transition: opacity 0.15s; }
+.detail.loading { opacity: 0.3; }
+
+.detail .path { color: var(--text-faint); font-size: 11px; margin-bottom: 4px; }
+.detail h1 { font-size: 13px; font-weight: 500; color: var(--text-strong); margin-bottom: 24px; }
+.detail .meta { color: var(--text-faint); font-size: 12px; margin-bottom: 24px; line-height: 1.9; }
+.detail .obj-sol { display: grid; grid-template-columns: 36px 1fr; gap: 4px 12px; margin-bottom: 48px; }
+.detail .obj-sol dt { color: var(--text-faint); font-size: 11px; padding-top: 2px; }
+.detail .obj-sol dd { margin: 0; }
+
+.library {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 24px;
+}
+
+.cell { cursor: crosshair; }
+
+.cell .media {
+  aspect-ratio: 16 / 10;
+  background: var(--cell);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-faint);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  overflow: hidden;
+  transition: background 0.35s ease;
+}
+
+.cell.tall .media { aspect-ratio: 4 / 5; }
+
+.cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.cell .tag { font-size: 10px; color: var(--text-faint); margin-top: 6px; }
+.cell:hover .tag { color: var(--text); }
+
+/* ---------- footer ---------- */
+footer {
+  padding: 0 40px 40px;
+  color: var(--text-faint);
+  font-size: 11px;
+  position: relative;
+  z-index: 2;
+}
+
+/* ---------- responsive ---------- */
+@media (max-width: 760px) {
+  header { padding: 24px 20px 0; gap: 20px; }
+  #landing {
+    height: auto;
+    min-height: 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 48px 40px;
+    padding: 64px 24px;
+  }
+  .room { display: none; }
+  .scene-obj, .avatar { position: static; transform: none; flex-direction: column; }
+  .scene-obj .label { opacity: 1; }
+  .wrap { grid-template-columns: 1fr; padding: 40px 20px 64px; gap: 48px; }
+  footer { padding: 0 20px 32px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="name" id="homeLink" role="button" tabindex="0">Aida Courtenay-Smith</div>
+  <nav>
+    <a href="mailto:hello@example.com">Contact</a>
+  </nav>
+</header>
+
+<!-- ============ LANDING ============ -->
+<section id="landing" aria-label="Categories"></section>
+
+<!-- ============ WORK ============ -->
+<section id="work">
+  <div class="wrap">
+    <nav class="index" aria-label="Projects">
+      <div class="cat-label" id="catLabel"></div>
+      <ul id="projectList"></ul>
+      <div><button class="back" id="backBtn">&larr; back</button></div>
+    </nav>
+    <main class="detail" id="detail"></main>
+  </div>
+</section>
+
+<footer>©2026 · asheville, nc <span id="themeName"></span></footer>
+
+<script>
+/* =========================================================
+   PIXEL ICONS — each icon is a grid of characters.
+   "." = transparent. Edit the palette or rows to redraw.
+   ========================================================= */
+const ICONS = {
+  /* open book — writing */
+  writing: {
+    palette: { O: "#f0a020", K: "#2a1200", W: "#faf5e8", L: "#a0a0b0" },
+    rows: [
+      "KOOOOOOOOOOOOOOK",
+      "KOWWWWWWKKWWWWOK",
+      "KOWLLLWWKKWWLLOK",
+      "KOWWWWWWKKWWWWOK",
+      "KOWLLLWWKKWWLLOK",
+      "KOWWWWWWKKWWWWOK",
+      "KOWLLLWWKKWWLLOK",
+      "KOWWWWWWKKWWWWOK",
+      "KOWLLLWWKKWWLLOK",
+      "KOWWWWWWKKWWWWOK",
+      "KOOOOOOOOOOOOOOK",
+      "................",
+      "................"
+    ]
+  },
+  /* film camera — video */
+  video: {
+    palette: { B: "#2b2b2e", G: "#4a4a50", W: "#e8e6df" },
+    rows: [
+      "..BBB...BBB.....",
+      ".BGGGB.BGGGB....",
+      ".BGBGB.BGBGB....",
+      ".BGGGB.BGGGB....",
+      "..BBB...BBB.....",
+      ".BBBBBBBBBBB....",
+      ".BGGGGGGGGGB.BB.",
+      ".BGGGGGGGGGBBGB.",
+      ".BGGGGWWGGGBBGB.",
+      ".BGGGGGGGGGB.BB.",
+      ".BBBBBBBBBBB....",
+      "....BB..........",
+      "...BBBB.........",
+      "..BB..BB........"
+    ]
+  },
+  /* framed film photo — gallery (landscape 22×14) */
+  photo: {
+    palette: {
+      F: "#a06830", S: "#7899b0", B: "#c0b8a8", G: "#4a7a28",
+      W: "#e0d8c8", w: "#a89888", K: "#181818", c: "#c0c0b8",
+      r: "#881010", R: "#8b2820", s: "#484040"
+    },
+    rows: [
+      "FFFFFFFFFFFFFFFFFFFFFF",
+      "FSSSSSSSSSSSSSSSSSSSSF",
+      "FSSSBBBBBBBBBBBBBBSSSF",
+      "FBBBGBBBBBBBBBBBBBBBBF",
+      "FBBBBBBBBBWWWWWWWWWWBF",
+      "FBWWWWWWWWWWWWWWWWWWBF",
+      "FBwwwwwwwwwwwwwwwwwwBF",
+      "FBwwwwwwwwwwwwwwwwwwBF",
+      "FBKccwwwwwwwwwwwwcKrBF",
+      "FssssssssssssssssssssF",
+      "FssssssssssssssssssssF",
+      "FRRRRRRRRRRRRRRRRRRRRF",
+      "FssssssssssssssssssssF",
+      "FFFFFFFFFFFFFFFFFFFFFF"
+    ]
+  },
+  /* phonograph — music */
+  music: {
+    palette: {
+      H: "#d4901a", h: "#f0c030", k: "#8a4808",
+      S: "#c0c0d0", s: "#888898",
+      B: "#8b3a18", b: "#b85a38", G: "#d4b020",
+      D: "#180800", T: "#3a2510", t: "#584030"
+    },
+    rows: [
+      "..hHHHHHHHHHHHk...",
+      ".hHHHHHHHHHHHHHk..",
+      "..hhHHHHHHHHHHhk..",
+      "....hhHHHHHHhhkS..",
+      "......hHHHHhkkSS..",
+      "......hHHhkSSs....",
+      "........kkSSs.....",
+      ".........SSs......",
+      "........sSTTTTTT..",
+      ".........TTTTTTTT.",
+      ".........TTtDtTTT.",
+      ".........TTTTTTTT.",
+      ".........DDDDDDD..",
+      ".........DbBBBbD..",
+      ".........DbGGGbD..",
+      ".........DDDDDDD..",
+      ".........D.....D..",
+      ".................."
+    ]
+  },
+  /* aida — orange-tinted glasses, open chore coat, white tee, jeans */
+  avatar: {
+    palette: {
+      H: "#4a3526",  /* hair */
+      S: "#e8bd9d",  /* skin */
+      s: "#d3a482",  /* skin shadow */
+      F: "#3a2f28",  /* glasses frame */
+      G: "#f08a2e",  /* orange lenses */
+      g: "#f7b264",  /* lens shine */
+      R: "#c97a6a",  /* smile */
+      O: "#f0a8a0",  /* blush */
+      E: "#e0b04c",  /* earrings */
+      B: "#3b5f8f",  /* chore coat */
+      L: "#2c4a73",  /* collar + pockets */
+      N: "#f4f2ec",  /* white shirt */
+      J: "#6d8cb0",  /* jeans */
+      j: "#5a7899",  /* jeans shading */
+      K: "#26262a",  /* shoes */
+      W: "#e8e6df",  /* soles */
+      U: "#f8f8f2",  /* mug white */
+      c: "#7b4218"   /* coffee brown */
+    },
+    rows: [
+      "....HHHHHHHHH.....",
+      "...HHHHHHHHHHH....",
+      "..HHHHHHHHHHHH....",
+      "..HHHHHHHHHHHHH...",
+      "..HHSSSSSSSSSHH...",
+      ".HHHSSSSSSSSSSHH..",
+      ".HHFGGGGFFGGGGFHH.",
+      ".HHFGgGGFFGGgGFHH.",
+      ".HEHSSOSSSSOSSHEH.",
+      ".HHHSSSSRRSSSSHHH.",
+      ".HHHsSSSSSSSSsHHH.",
+      ".HHH..SSSSSS..HHH.",
+      ".HHH.LLBNNBLL.HHH.",
+      ".HHHBBBNNNNBBBHHH.",
+      ".HHHBBBNNNNBBBHHH.",
+      "...BBBBNNNNBBBBUUU",
+      "...BLLBNNNNBLLBUcU",
+      "...BLLBNNNNBLLBUcU",
+      "...BBBBNNNNBBBBUcU",
+      "..SBBBBNNNNBBBBScU",
+      "...BBBBNNNNBBBBUcU",
+      "....JJJJJJJJJJ....",
+      ".JJJJJJJJJJJJJJJJ.",
+      "JJJJJJJJJJJJJJJJJJ",
+      "JJJJJJKKjjKKJJJJJJ",
+      "..WWWW....jj....WW"
+    ]
+  },
+
+  /* cardboard box — misc */
+  misc: {
+    palette: { B: "#c98a3e", D: "#9c6425", L: "#dda75c" },
+    rows: [
+      "................",
+      "..BBBBB..BBBBB..",
+      ".BLLLLLBBLLLLLB.",
+      ".BBBBBBDDBBBBBB.",
+      ".BLLLLLBBLLLLLB.",
+      ".BLLLLLBBLLLLLB.",
+      ".BLLLLLBBLLLLLB.",
+      ".BLLLLLBBLLLLLB.",
+      ".BLLLLLBBLLLLLB.",
+      ".BLLLLLBBLLLLLB.",
+      ".BBBBBBBBBBBBBB.",
+      "................"
+    ]
+  }
+};
+
+function iconSVG(icon, palette) {
+  const pal = palette || icon.palette;
+  const rows = icon.rows;
+  const h = rows.length, w = rows[0].length;
+  let rects = "";
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const ch = rows[y][x];
+      if (ch !== ".") {
+        rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="${pal[ch]}"/>`;
+      }
+    }
+  }
+  return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" aria-hidden="true">${rects}</svg>`;
+}
+
+/* =========================================================
+   CATEGORIES + PROJECT DATA — edit here.
+   To use a real image in a cell: { tag: "...", src: "img.jpg" }
+   ========================================================= */
+const CATEGORIES = [
+  { id: "writing", label: "writing" },
+  { id: "video",   label: "video" },
+  { id: "photo",   label: "gallery" },
+  { id: "music",   label: "music" },
+  { id: "misc",    label: "misc." }
+];
+
+const PROJECTS = [
+  {
+    id: "little-trees", cat: "video",
+    title: "Little Trees",
+    path: "/films/little_trees.mp4",
+    meta: "2026 · director, editor · documentary short",
+    objective: "Portrait the bonsai curator at the North Carolina Arboretum — convey the decades-long relationship between a person and a living form.",
+    solution: "Shot a documentary short on location in the Blue Ridge Mountains; meditative pacing mirrors the slowness of the subject.",
+    cells: [
+      { tag: "still_001 · 00:42:16" },
+      { tag: "still_002 · 03:11:04", tall: true },
+      { tag: "still_003 · 07:58:22" },
+      { tag: "still_004 · 11:02:09" },
+      { tag: "bts_001", tall: true },
+      { tag: "still_005 · 14:47:30" }
+    ]
+  },
+  {
+    id: "resonate-chop", cat: "video",
+    title: "resonate/chop",
+    path: "/installations/resonate_chop.mov",
+    meta: "2025 · video artist · installation, w/ bryce franich",
+    objective: "Build a video-sound work for a downtown art walk that could hold a moving audience outside a gallery context.",
+    solution: "A 22-minute projection loop using signal degradation as texture and rhythmic repetition to pull viewers into trance.",
+    cells: [
+      { tag: "loop_frame_114" },
+      { tag: "install_doc_01" },
+      { tag: "loop_frame_871", tall: true },
+      { tag: "install_doc_02" }
+    ]
+  },
+  {
+    id: "source-code", cat: "video",
+    title: "Source Code",
+    path: "/motion/source_code_mg/",
+    meta: "2026 — · founder, animator · motion studio",
+    objective: "Consciousness educators needed visual language for sacred geometry that could travel across social and course platforms.",
+    solution: "Founded a boutique motion practice; developed an animated grammar from torus, flower of life, and Metatron's cube forms.",
+    cells: [
+      { tag: "torus_study_v3" },
+      { tag: "flower_of_life_anim", tall: true },
+      { tag: "metatron_wire_02" },
+      { tag: "demo_reel_frame" }
+    ]
+  },
+  {
+    id: "selected-edits", cat: "video",
+    title: "Selected Edits",
+    path: "/edits/wellness_reels/",
+    meta: "2024–26 · editor · short-form",
+    objective: "Wellness clients needed short-form video that performed on algorithm-driven platforms without sacrificing brand stillness.",
+    solution: "Cut retention-first reels for AyurPrana+, SoHum Mountain Healing Resort, Dr. Vasant Lad, and Peter Crone — pacing calibrated to hold without urgency.",
+    cells: [
+      { tag: "reel_vasant_lad_01", tall: true },
+      { tag: "reel_sohum_crone", tall: true },
+      { tag: "reel_ayurprana_07", tall: true },
+      { tag: "reel_ayurprana_12", tall: true }
+    ]
+  },
+  {
+    id: "runners-high", cat: "writing",
+    title: "Runner's High",
+    path: "/scripts/runners_high.pdf",
+    meta: "in development · writer, director · narrative short",
+    objective: "Write a short film about grief that doesn't end in grief — locate the exact moment joy arrives uninvited.",
+    solution: "Script in development; a woman running the Blue Ridge Parkway, the story ending in ecstatic dance. v4.",
+    cells: [
+      { tag: "moodboard_01" },
+      { tag: "location_scout_parkway" },
+      { tag: "ref_frame_002", tall: true },
+      { tag: "storyboard_p12" }
+    ]
+  },
+  {
+    id: "burnout", cat: "writing",
+    title: "Burnout",
+    path: "/scripts/burnout.pdf",
+    meta: "in development · writer, director, performer · single location",
+    objective: "Write and direct a solo production that lives entirely in the negative space between exhaustion and clarity — no budget, no locations, no cast.",
+    solution: "Single-apartment concept designed for one performer and minimal crew; shooting model built for solo production.",
+    cells: [
+      { tag: "ref_lighting_01", tall: true },
+      { tag: "floorplan_v2" },
+      { tag: "ref_frame_009" }
+    ]
+  },
+  {
+    id: "film", cat: "photo",
+    title: "Film",
+    path: "/photos/film/",
+    meta: "ongoing · 35mm + 120",
+    objective: "Maintain a personal archive of film photography separate from production work.",
+    solution: "Ongoing 35mm and 120 roll archive; images selected for light quality and instinct over documentation.",
+    cells: [
+      { tag: "000017700026", src: "photos/film/000017700026 copy.jpg", tall: true },
+      { tag: "001305470029", src: "photos/film/001305470029 copy.jpg" }
+    ]
+  },
+  {
+    id: "sound-studies", cat: "music",
+    title: "Sound Studies",
+    path: "/music/sound_studies/",
+    meta: "ongoing · collaborations, experiments",
+    objective: "Create a space for sonic experimentation outside of scored or post-production contexts.",
+    solution: "Ongoing collaborations and solo studies in sound.",
+    cells: [
+      { tag: "track_01" },
+      { tag: "track_02" }
+    ]
+  },
+  {
+    id: "odds-ends", cat: "misc",
+    title: "Odds + Ends",
+    path: "/misc/",
+    meta: "various",
+    objective: "Brand work, experiments, and commissions that don't fit a single category.",
+    solution: "Various — identity, motion tests, and short-run projects.",
+    cells: [
+      { tag: "item_01" },
+      { tag: "item_02" },
+      { tag: "item_03" }
+    ]
+  }
+];
+
+/* =========================================================
+   ROOM PIXEL ART BUILDERS
+   ========================================================= */
+function pxSVG(W, H, fn, attrs='') {
+  const g = Array.from({length: H}, () => new Array(W).fill(null));
+  const s = (x, y, c) => { if (x >= 0 && x < W && y >= 0 && y < H) g[y][x] = c; };
+  fn(s, W, H);
+  let r = '';
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++)
+      if (g[y][x]) r += `<rect x="${x}" y="${y}" width="1" height="1" fill="${g[y][x]}"/>`;
+  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="display:block;width:100%;height:100%;image-rendering:pixelated" ${attrs}>${r}</svg>`;
+}
+
+function buildWindow(W, H) {
+  return pxSVG(W, H, (s) => {
+    const Fr='#7a5a30', Fd='#4a3010';
+    const Sk='#6ab0e0', Sl='#9acef5';
+    const Wc='#f8feff', Ws='#d0edf8';
+    const Gd='#2a5a10', Gm='#3a7820', Gl='#4a9230', Gh='#5aaa3a';
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      if (x < 2 || x >= W-2 || y < 2 || y >= H-2)
+        s(x, y, (x===0||y===0||x===W-1||y===H-1) ? Fd : Fr);
+      else s(x, y, Sk);
+    }
+    for (let y = 2; y < H-2; y++) for (let x = 2; x < W-2; x++)
+      if ((x + y*3) % 19 === 0) s(x, y, Sl);
+    const cloud = (cx, cy, rx, ry) => {
+      for (let dy = -ry; dy <= ry; dy++) for (let dx = -rx; dx <= rx; dx++) {
+        const f = (dx*dx)/(rx*rx) + (dy*dy)/(ry*ry);
+        if (f <= 1 && cy+dy >= 2 && cy+dy < Math.floor(H*0.55))
+          s(cx+dx, cy+dy, (dx*dx)/((rx-1)*(rx-1))+(dy*dy)/((ry-1)*(ry-1)) <= 1 ? Wc : Ws);
+      }
+    };
+    cloud(9, 8, 7, 4);
+    cloud(22, 6, 5, 3);
+    const gs = Math.floor(H * 0.65);
+    for (let y = gs; y < H-2; y++) for (let x = 2; x < W-2; x++) {
+      const hill = gs + Math.round(Math.sin((x-2)/(W-4) * Math.PI) * H * 0.07);
+      if (y >= hill) { const d = y - hill; s(x, y, d===0?Gh:d<=2?Gl:d<=5?Gm:Gd); }
+    }
+    const bx = Math.floor(W/2), by = Math.floor(H * 0.4);
+    for (let y = 2; y < H-2; y++) { s(bx, y, Fr); if (bx > 2) s(bx-1, y, Fd); }
+    for (let x = 2; x < W-2; x++) s(x, by, Fr);
+  });
+}
+
+function buildRug(W, H) {
+  return pxSVG(W, H, (s) => {
+    const B='#100808', R='#8b1a1a', C='#d4b896', c='#b89060', G='#c8921a';
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) s(x, y, R);
+    for (let x = 0; x < W; x++) {
+      s(x, 0, x%2===0?B:C);   s(x, 1, x%2===0?C:B);
+      s(x, H-1, x%2===0?B:C); s(x, H-2, x%2===0?C:B);
+    }
+    for (let y = 2; y < H-2; y++) {
+      s(0, y, y%2===0?B:C);   s(1, y, y%2===0?C:B);
+      s(W-1, y, y%2===0?B:C); s(W-2, y, y%2===0?C:B);
+    }
+    [[2,B],[3,C],[4,B],[5,c],[6,B]].forEach(([r,col]) => {
+      for (let x = r; x < W-r; x++) { s(x, r, col); s(x, H-1-r, col); }
+      for (let y = r+1; y < H-1-r; y++) { s(r, y, col); s(W-1-r, y, col); }
+    });
+    const cx = Math.floor(W/2), cy = Math.floor(H/2), mr = 7;
+    for (let dy = -mr; dy <= mr; dy++) for (let dx = -mr; dx <= mr; dx++) {
+      const d = Math.abs(dx) + Math.abs(dy);
+      if (d > mr) continue;
+      s(cx+dx, cy+dy, d===mr?B : d>=mr-2?C : d>=mr-4?B : d>=mr-5?c : d>=mr-6?B : G);
+    }
+    s(cx, cy, C);
+    [[9,8],[W-10,8],[9,H-9],[W-10,H-9]].forEach(([qx,qy]) => {
+      for (let d = 0; d <= 3; d++)
+        for (let dy = -d; dy <= d; dy++)
+          for (let dx = -(d-Math.abs(dy)); dx <= d-Math.abs(dy); dx++)
+            s(qx+dx, qy+dy, d===3?B : d===2?C : d===1?B : G);
+    });
+    [Math.floor(W*0.25), Math.floor(W*0.75)].forEach(ox => {
+      const sr = 4;
+      for (let dy = -sr; dy <= sr; dy++) for (let dx = -sr; dx <= sr; dx++) {
+        const d = Math.abs(dx) + Math.abs(dy);
+        if (d <= sr) s(ox+dx, cy+dy, d===sr?B : d>=sr-1?C : d>=sr-2?B : R);
+      }
+    });
+  }, 'preserveAspectRatio="none"');
+}
+
+function buildDesk(W, H) {
+  return pxSVG(W, H, (s) => {
+    const Wh='#c4834a', Wm='#8b5a2b', Wd='#6a3a12', Wk='#3a1a08';
+    for (let x = 0; x < W; x++) { s(x,0,Wh); s(x,1,Wm); s(x,2,Wd); if(x%5===2) s(x,1,Wd); }
+    for (let y = 3; y < H; y++) {
+      s(3,y,Wh); s(4,y,Wm); s(5,y,Wd);
+      s(W-6,y,Wh); s(W-5,y,Wm); s(W-4,y,Wd);
+    }
+    for (let x = 4; x < W-5; x++) { s(x,H-4,Wm); s(x,H-3,Wd); }
+    for (let dx = 0; dx <= 2; dx++) { s(2+dx,H-1,Wk); s(W-7+dx,H-1,Wk); }
+  });
+}
+
+function buildCabinet(W, H) {
+  return pxSVG(W, H, (s) => {
+    const Wh='#9a6830', Wm='#7a5220', Wd='#5a3810', Wk='#3a2408', Dk='#221408';
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) s(x, y, Wm);
+    for (let x = 0; x < W; x++) { s(x,0,Wh); s(x,1,Wm); s(x,2,Wd); }
+    for (let y = 0; y < H; y++) { s(0,y,Wh); s(W-1,y,Dk); s(W-2,y,Wk); }
+    const mid = Math.floor(W/2);
+    for (let x = 3; x < mid-1; x++) { s(x,4,Wk); s(x,H-3,Wk); }
+    for (let y = 5; y < H-3; y++) { s(3,y,Wk); s(mid-2,y,Wk); }
+    for (let x = mid+2; x < W-3; x++) { s(x,4,Wk); s(x,H-3,Wk); }
+    for (let y = 5; y < H-3; y++) { s(mid+2,y,Wk); s(W-3,y,Wk); }
+    for (let y = 0; y < H; y++) { s(mid,y,Dk); s(mid-1,y,Wk); }
+    s(Math.floor(mid*0.55), Math.floor(H*0.55), Wh);
+    s(W-Math.floor(mid*0.55)-1, Math.floor(H*0.55), Wh);
+    for (let x = 0; x < W; x++) { s(x,H-2,Wk); s(x,H-1,Dk); }
+  });
+}
+
+function buildShelf(W, H) {
+  return pxSVG(W, H, (s) => {
+    const Wh='#c4834a', Wm='#8b5a2b', Wd='#6a3a12', Wk='#3a1a08';
+    for (let x = 0; x < W; x++) { s(x,0,Wh); s(x,1,Wm); s(x,2,Wd); if(x%6===1) s(x,1,Wd); }
+    if (H > 3) {
+      for (let y = 3; y < H; y++) { s(3,y,Wm); s(4,y,Wd); s(W-5,y,Wm); s(W-4,y,Wd); }
+      for (let x = 3; x <= 8; x++) s(x, H-1, Wd);
+      for (let x = W-9; x <= W-4; x++) s(x, H-1, Wd);
+    }
+  });
+}
+
+/* ---------- landing ---------- */
+const landing = document.getElementById("landing");
+
+const room = document.createElement("div");
+room.className = "room";
+room.innerHTML = '<div class="room-window"></div><div class="room-rug"></div><div class="furn-desk"></div><div class="furn-cabinet"></div><div class="furn-shelf"></div>';
+room.querySelector('.room-window').innerHTML = buildWindow(30, 44);
+room.querySelector('.room-rug').innerHTML    = buildRug(64, 28);
+room.querySelector('.furn-desk').innerHTML   = buildDesk(30, 14);
+room.querySelector('.furn-cabinet').innerHTML = buildCabinet(24, 18);
+room.querySelector('.furn-shelf').innerHTML  = buildShelf(40, 8);
+landing.appendChild(room);
+
+const avatar = document.createElement("figure");
+avatar.className = "avatar";
+avatar.innerHTML = `<span class="icon-holder">${iconSVG(ICONS.avatar)}</span><div class="steam"></div>`;
+landing.appendChild(avatar);
+
+CATEGORIES.forEach(cat => {
+  const btn = document.createElement("button");
+  btn.className = "scene-obj";
+  btn.dataset.cat = cat.id;
+  btn.innerHTML = `<span class="icon-holder">${iconSVG(ICONS[cat.id])}</span><span class="label">${cat.label}</span>`;
+  btn.addEventListener("click", () => openCategory(cat.id));
+  landing.appendChild(btn);
+});
+
+/* ---------- work view ---------- */
+const workSection = document.getElementById("work");
+const list = document.getElementById("projectList");
+const detail = document.getElementById("detail");
+const catLabel = document.getElementById("catLabel");
+
+function openCategory(catId) {
+  const cat = CATEGORIES.find(c => c.id === catId);
+  const projects = PROJECTS.filter(p => p.cat === catId);
+
+  catLabel.textContent = "~/" + cat.label.replace(".", "");
+  list.innerHTML = "";
+  projects.forEach(p => {
+    const li = document.createElement("li");
+    const btn = document.createElement("button");
+    btn.textContent = p.title;
+    btn.dataset.id = p.id;
+    btn.addEventListener("click", () => load(p.id));
+    li.appendChild(btn);
+    list.appendChild(li);
+  });
+
+  landing.style.display = "none";
+  workSection.style.display = "block";
+  if (projects.length) load(projects[0].id);
+  window.scrollTo({ top: 0 });
+}
+
+function goHome() {
+  workSection.style.display = "none";
+  landing.style.display = "";
+  window.scrollTo({ top: 0 });
+}
+
+document.getElementById("backBtn").addEventListener("click", goHome);
+const homeLink = document.getElementById("homeLink");
+homeLink.addEventListener("click", goHome);
+homeLink.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") goHome(); });
+
+function load(id) {
+  const p = PROJECTS.find(x => x.id === id);
+  if (!p) return;
+
+  document.querySelectorAll(".index button[data-id]").forEach(b =>
+    b.classList.toggle("active", b.dataset.id === id));
+
+  detail.classList.add("loading");
+
+  setTimeout(() => {
+    detail.innerHTML = `
+      <div class="path">${p.path}</div>
+      <h1>${p.title}</h1>
+      <div class="meta">${p.meta}</div>
+      <dl class="obj-sol">
+        <dt>obj.</dt><dd>${p.objective}</dd>
+        <dt>sol.</dt><dd>${p.solution}</dd>
+      </dl>
+      <div class="library">
+        ${p.cells.map(c => `
+          <figure class="cell${c.tall ? " tall" : ""}">
+            <div class="media">${c.src ? `<img src="${c.src}" alt="${c.tag}">` : c.tag}</div>
+            <figcaption class="tag">${c.tag}</figcaption>
+          </figure>`).join("")}
+      </div>
+    `;
+    detail.classList.remove("loading");
+  }, 150);
+}
+
+/* ---------- color schemes ---------- */
+const THEMES = [
+  { name: "paper",      bg: "#ffffff", text: "#6b6b6b", strong: "#3d3d3d", faint: "#b8b8b8", cell: "#f2f2f2", hue: null },
+  { name: "buttercream", bg: "#fbf3d9", text: "#8a7a4e", strong: "#4f4326", faint: "#cfc29a", cell: "#f3e9c4", hue: 46 },
+  { name: "orchid",     bg: "#f9edf6", text: "#966b8d", strong: "#5c2f52", faint: "#d3b3ca", cell: "#f1dcec", hue: 315 },
+  { name: "peach",      bg: "#fcefe6", text: "#a37660", strong: "#5f3a28", faint: "#ddbfb0", cell: "#f6e0d1", hue: 22 },
+  { name: "rosewater",  bg: "#fbeef0", text: "#a4707c", strong: "#5e3641", faint: "#dcb9c0", cell: "#f4dde1", hue: 348 },
+  { name: "clay",       bg: "#f3e6dc", text: "#8f6f5a", strong: "#4d3628", faint: "#c9b3a3", cell: "#ead8c9", hue: 26 },
+  { name: "marigold",   bg: "#fdf6e3", text: "#a1823c", strong: "#5c4715", faint: "#d9c68f", cell: "#f7ecc8", hue: 43 },
+  { name: "mauve",      bg: "#efe7f0", text: "#7d6a86", strong: "#41314b", faint: "#bcadc3", cell: "#e4d8e6", hue: 286 },
+  { name: "plum",       bg: "#251a24", text: "#a98aa0", strong: "#eed7e6", faint: "#5c4356", cell: "#332531", hue: 315, dark: true },
+  { name: "amber",      bg: "#1c1408", text: "#ab8a55", strong: "#ecc98c", faint: "#5c4b30", cell: "#281e10", hue: 40,  dark: true }
+];
+
+let themeIndex = 9;
+
+/* --- color math for tinting icons to the active scheme --- */
+function hexToHsl(hex) {
+  const n = parseInt(hex.slice(1), 16);
+  let r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h = 0, s = 0, l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0));
+    else if (max === g) h = (b - r) / d + 2;
+    else h = (r - g) / d + 4;
+    h *= 60;
+  }
+  return [h, s * 100, l * 100];
+}
+
+function hslToHex(h, s, l) {
+  s /= 100; l /= 100;
+  const k = n => (n + h / 30) % 12;
+  const a = s * Math.min(l, 1 - l);
+  const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
+  const to = x => Math.round(x * 255).toString(16).padStart(2, "0");
+  return "#" + to(f(0)) + to(f(8)) + to(f(4));
+}
+
+function tint(hex, theme) {
+  if (theme.hue === null) return hex;              // paper keeps original icon colors
+  let [h, s, l] = hexToHsl(hex);
+  s = Math.min(Math.max(s, 30), 62);               // pull greys into the hue, calm loud colors
+  if (theme.dark) l = 32 + l * 0.58;               // lift dark pixels so icons read on dark bg
+  return hslToHex(theme.hue, s, l);
+}
+
+function tintedPalette(icon, theme) {
+  const out = {};
+  for (const key in icon.palette) out[key] = tint(icon.palette[key], theme);
+  return out;
+}
+
+function avatarJump() {
+  const svg = document.querySelector(".avatar svg");
+  if (!svg) return;
+  svg.classList.remove("jump");
+  void svg.offsetWidth; /* restart animation */
+  svg.classList.add("jump");
+  svg.addEventListener("animationend", () => svg.classList.remove("jump"), { once: true });
+}
+
+function renderIcons(theme, pop) {
+  if (pop) avatarJump();
+  document.querySelectorAll(".scene-obj").forEach((btn, i) => {
+    const catId = btn.dataset.cat;
+    const holder = btn.querySelector(".icon-holder");
+    holder.innerHTML = iconSVG(ICONS[catId]);
+    if (pop) {
+      const svg = holder.querySelector("svg");
+      svg.style.animationDelay = (i * 0.06) + "s";
+      svg.classList.add("pop");
+      svg.addEventListener("animationend", () => svg.classList.remove("pop"), { once: true });
+    }
+  });
+}
+
+function applyTheme(t, pop) {
+  const r = document.documentElement.style;
+  r.setProperty("--bg", t.bg);
+  r.setProperty("--text", t.text);
+  r.setProperty("--text-strong", t.strong);
+  r.setProperty("--text-faint", t.faint);
+  r.setProperty("--cell", t.cell);
+  document.getElementById("themeName").textContent = "· scheme: " + t.name;
+  renderIcons(t, pop);
+}
+
+applyTheme(THEMES[9]);
+</script>
+
+</body>
+</html>
