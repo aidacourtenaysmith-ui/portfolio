@@ -447,6 +447,15 @@ header nav a:hover { color: var(--text-strong); }
   margin-bottom: 20px;
 }
 
+/* ---------- coming soon ---------- */
+.coming-soon {
+  font-size: 12px;
+  color: var(--text-faint);
+  font-style: italic;
+  margin-top: 32px;
+  letter-spacing: 0.04em;
+}
+
 /* ---------- welcome chatbox ---------- */
 /* pixel speech bubble — left of avatar, tail at bottom-right */
 #welcome-box {
@@ -549,7 +558,8 @@ footer {
     <button class="back" id="aboutBackBtn">&larr; back</button>
     <h1>Aida Courtenay-Smith</h1>
     <p>filmmaker, writer, photographer, musician. based in asheville, nc.</p>
-    <p>[ fill in your bio here ]</p>
+    <p>Aida Courtenay-Smith is an interdisciplinary artist specializing in filmmaking and digital media. Drawing inspiration from nature, beauty, and place — Asheville, the Bay Area, and Maui — she moves fluidly between writing, video and image-making, and new adventures that continually shape her creative perspective.</p>
+    <p>For the past two years, Aida worked as a content creator, producing and editing short documentaries, music performances, and educational spiritual content. She has since made the deliberate choice to invest in her own creative vision: building a personal YouTube channel to document her life and journey, while channeling her passion for small business and storytelling into freelance marketing and media work for aligned brands and creators.</p>
   </div>
 </section>
 
@@ -794,9 +804,8 @@ const PROJECTS = [
     id: "youtube-channel", cat: "video",
     title: "YouTube Channel",
     meta: "ongoing · creator",
-    cells: [
-      { tag: "placeholder_01" }
-    ]
+    cells: [],
+    comingSoon: true
   },
   {
     id: "editing-reel", cat: "video",
@@ -851,25 +860,22 @@ const PROJECTS = [
     meta: "ongoing · essays",
     external: true,
     path: "",
-    cells: []
+    cells: [],
+    comingSoon: true
   },
   {
     id: "what-i-would-give", cat: "writing",
     title: "What I Would Give",
-    meta: "· writing",
-    cells: [
-      { tag: "placeholder_01" }
-    ]
+    meta: "writing",
+    cells: [],
+    comingSoon: true
   },
   {
     id: "burnout", cat: "writing",
     title: "Burnout",
-    meta: "in development · writer, director, performer · single location",
-    cells: [
-      { tag: "ref_lighting_01", tall: true },
-      { tag: "floorplan_v2" },
-      { tag: "ref_frame_009" }
-    ]
+    meta: "in development · writer, director, performer",
+    cells: [],
+    comingSoon: true
   },
 
   /* ---- MUSIC ---- */
@@ -877,23 +883,17 @@ const PROJECTS = [
     id: "listen", cat: "music",
     title: "Listen",
     meta: "ongoing · original projects",
-    cells: [
-      { tag: "project_01" },
-      { tag: "project_02" },
-      { tag: "project_03" }
-    ]
+    cells: [],
+    comingSoon: true
   },
 
   /* ---- MISC ---- */
   {
     id: "dandy-streetwear", cat: "misc",
     title: "Dandy Streetwear",
-    meta: "· fashion · brand",
-    cells: [
-      { tag: "placeholder_01" },
-      { tag: "placeholder_02" },
-      { tag: "placeholder_03" }
-    ]
+    meta: "fashion · brand",
+    cells: [],
+    comingSoon: true
   }
 
 ];
@@ -1209,17 +1209,20 @@ function load(id) {
         document.body.appendChild(script);
       }
     } else {
-      detail.innerHTML = `
-        <h1>${p.title}</h1>
-        <div class="meta">${p.meta}</div>
-        ${videoHTML}
-        <div class="library">
+      const bodyHTML = p.comingSoon
+        ? `<div class="coming-soon">coming soon.</div>`
+        : `<div class="library">
           ${p.cells.map(c => `
             <figure class="cell${c.tall ? " tall" : ""}">
               <div class="media">${c.src ? `<img src="${c.src}" alt="${c.tag}">` : c.tag}</div>
               <figcaption class="tag">${c.tag}</figcaption>
             </figure>`).join("")}
-        </div>
+        </div>`;
+      detail.innerHTML = `
+        <h1>${p.title}</h1>
+        <div class="meta">${p.meta}</div>
+        ${videoHTML}
+        ${bodyHTML}
       `;
       detail.classList.remove("loading");
     }
