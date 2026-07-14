@@ -405,6 +405,9 @@ header nav a:hover { color: var(--text-strong); }
   width: auto;
   height: auto;
 }
+.photo-triple img {
+  max-width: calc(33.33% - 11px);
+}
 .photo-nav {
   display: flex;
   align-items: center;
@@ -880,7 +883,7 @@ const PROJECTS = [
       { tag: "ADS05542",     src: "photos/other/ADS05542 copy.jpg" },
       { tag: "000017700026", src: "photos/film/000017700026 copy.jpg", tall: true },
       { tag: "001305470029", src: "photos/film/001305470029 copy.jpg" },
-      { tag: "ADS04670",     src: "photos/other/ADS04670.jpg" },
+      { tag: "ADS04670",     src: "photos/other/ADS04670.jpg", triple: true },
       { tag: "ADS04686",     src: "photos/other/ADS04686.jpg" },
       { tag: "ADS04689",     src: "photos/other/ADS04689.jpg" },
       { tag: "ADS05662",     src: "photos/other/ADS05662 copy.jpg" },
@@ -1192,28 +1195,41 @@ function load(id) {
       const photos = p.cells.filter(c => c.src);
       let idx = 0;
       function renderPhoto() {
-        const a = photos[idx], b = photos[idx + 1];
-        const countLabel = b ? `${idx + 1}–${idx + 2} / ${photos.length}` : `${idx + 1} / ${photos.length}`;
+        const a = photos[idx];
+        const isTriple = a && a.triple && photos[idx + 2] !== undefined;
+        const step = isTriple ? 3 : 2;
+        const batch = photos.slice(idx, idx + step);
+        const last = idx + step - 1;
+        const countLabel = batch.length > 1
+          ? `${idx + 1}–${Math.min(idx + step, photos.length)} / ${photos.length}`
+          : `${idx + 1} / ${photos.length}`;
         detail.innerHTML = `
           <h1>${p.title}</h1>
           <div class="meta">${p.meta}</div>
           ${videoHTML}
           <div class="photo-viewer">
-            <div class="photo-pair">
-              <img src="${a.src}" alt="${a.tag}">
-              ${b ? `<img src="${b.src}" alt="${b.tag}">` : ""}
+            <div class="photo-pair${isTriple ? " photo-triple" : ""}">
+              ${batch.map(ph => `<img src="${ph.src}" alt="${ph.tag}">`).join("")}
             </div>
             <div class="photo-nav">
               <button class="pp" ${idx === 0 ? "disabled" : ""}>&larr; prev</button>
               <span class="photo-count">${countLabel}</span>
-              <button class="pn" ${idx + 2 >= photos.length ? "disabled" : ""}>next &rarr;</button>
+              <button class="pn" ${idx + step >= photos.length ? "disabled" : ""}>next &rarr;</button>
             </div>
-            <div class="photo-tag">${a.tag}${b ? " · " + b.tag : ""}</div>
+            <div class="photo-tag">${batch.map(ph => ph.tag).join(" · ")}</div>
           </div>
         `;
         detail.classList.remove("loading");
-        detail.querySelector(".pp").addEventListener("click", () => { if (idx > 0) { idx = Math.max(0, idx - 2); renderPhoto(); } });
-        detail.querySelector(".pn").addEventListener("click", () => { if (idx + 2 < photos.length) { idx += 2; renderPhoto(); } });
+        detail.querySelector(".pp").addEventListener("click", () => {
+          if (idx > 0) {
+            const prevA = photos[idx - (photos[idx - 1]?.triple ? 3 : 2)];
+            idx = Math.max(0, idx - (prevA?.triple ? 3 : 2));
+            renderPhoto();
+          }
+        });
+        detail.querySelector(".pn").addEventListener("click", () => {
+          if (idx + step < photos.length) { idx += step; renderPhoto(); }
+        });
       }
       renderPhoto();
     } else if (p.embeds) {
