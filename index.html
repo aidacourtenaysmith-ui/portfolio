@@ -389,6 +389,7 @@ header nav a:hover { color: var(--text-strong); }
   flex: 1 1 300px;
   max-width: 540px;
 }
+.substack-embed { max-width: 600px; margin-top: 16px; }
 .embed-caption {
   margin-top: 8px;
   font-size: 11px;
@@ -860,7 +861,7 @@ const PROJECTS = [
   {
     id: "editing-reel", cat: "video",
     title: "Editing Reel",
-    meta: "video editor and colorist using premiere pro and davinci resolve",
+    meta: "Video editor and colorist using Premiere Pro and DaVinci Resolve",
     video: "videos/ACS_REEL.mp4",
     cells: []
   },
@@ -910,6 +911,18 @@ const PROJECTS = [
   },
 
   /* ---- WRITING ---- */
+  {
+    id: "follow-through", cat: "writing",
+    title: "Follow Through",
+    meta: "essay · Substack",
+    cells: [],
+    substack: {
+      url: "https://aidacourtenaysmith.substack.com/p/follow-through",
+      title: "Follow Through",
+      subtitle: "Quitting my dream job and actually doing it",
+      author: "Aida Courtenay-Smith"
+    }
+  },
   {
     id: "what-i-would-give", cat: "writing",
     title: "What I Would Give",
@@ -1181,7 +1194,7 @@ welcomeBox.innerHTML = `
     />
   </svg>
   <div class="bubble-content">
-    <p>Welcome to my portfolio, feel free to take a look around.</p>
+    <p>Welcome to my portfolio, feel free to take a look around!</p>
   </div>
 `;
 landing.appendChild(welcomeBox);
@@ -1280,6 +1293,24 @@ function load(id) {
         script.src = "https://www.instagram.com/embed.js";
         document.body.appendChild(script);
       }
+    } else if (p.substack) {
+      detail.innerHTML = `
+        <h1>${p.title}</h1>
+        <div class="meta">${p.meta}</div>
+        <div class="substack-embed">
+          <div class="substack-post-embed">
+            <p lang="en">${p.substack.title} by ${p.substack.author}</p>
+            <p>${p.substack.subtitle}</p>
+            <a data-post-link href="${p.substack.url}">Read on Substack</a>
+          </div>
+        </div>
+      `;
+      detail.classList.remove("loading");
+      const script = document.createElement("script");
+      script.src = "https://substack.com/embedjs/embed.js";
+      script.async = true;
+      script.charset = "utf-8";
+      document.body.appendChild(script);
     } else {
       const bodyHTML = p.link
         ? `<a class="ext-link" href="${p.link.url}" target="_blank" rel="noopener">${p.link.label} &nearr;</a>`
