@@ -422,6 +422,13 @@ header nav a:hover { color: var(--text-strong); }
   max-width: 540px;
 }
 .substack-embed { max-width: 600px; margin-top: 16px; }
+.about-photo, .section-photo {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  margin: 8px 0 24px;
+}
 .track-list { display: flex; flex-direction: column; gap: 28px; margin-top: 24px; max-width: 540px; }
 .track-title { font-size: 13px; color: var(--text-strong); margin-bottom: 10px; letter-spacing: 0.03em; }
 .track audio { width: 100%; display: block; }
@@ -656,6 +663,7 @@ footer {
   <div class="about-wrap">
     <button class="back" id="aboutBackBtn">&larr; back</button>
     <h1>Aida Courtenay-Smith</h1>
+    <img class="about-photo" src="about.jpg" alt="Aida sitting on a rock above the Point Reyes coastline">
     <p>Aida Courtenay-Smith is an interdisciplinary artist specializing in filmmaking and digital media. Drawing inspiration from nature, beauty, and place — Asheville, the Bay Area, and Maui — she moves fluidly between writing, video and image-making, and new adventures that continually shape her creative perspective.</p>
     <p>For the past two years, Aida worked as a content creator, producing and editing short documentaries, music performances, and educational spiritual content. She has since made the deliberate choice to invest in her own creative vision: building a personal YouTube channel to document her life and journey, while channeling her passion for small business and storytelling into freelance marketing and media work for aligned brands and creators.</p>
   </div>
@@ -926,6 +934,13 @@ const PROJECTS = [
     youtube: "Xj7PA8XZOCQ",
     cells: []
   },
+  {
+    id: "resonate-chop", cat: "video",
+    title: "resonate/chop",
+    meta: "video installation · editor",
+    youtube: "CSDNQ8gsH6s",
+    cells: []
+  },
 
   /* ---- PHOTO ---- */
   {
@@ -1001,6 +1016,7 @@ const PROJECTS = [
     title: "Listen",
     meta: "silly little songs i made for fun",
     cells: [],
+    photo: { src: "music/making-music.jpg", alt: "Aida making music on a laptop in a hammock" },
     tracks: [
       { title: "Day Drinking",    src: "music/daydrinking.m4a" },
       { title: "Spirit Airlines", src: "music/spiritairlines.m4a" }
@@ -1365,6 +1381,7 @@ function load(id) {
       detail.innerHTML = `
         <h1>${p.title}</h1>
         <div class="meta">${p.meta}</div>
+        ${p.photo ? `<img class="section-photo" src="${p.photo.src}" alt="${p.photo.alt}">` : ""}
         <div class="track-list">
           ${p.tracks.map(t => `
             <div class="track">
