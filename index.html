@@ -1206,8 +1206,12 @@ function load(id) {
   setTimeout(() => {
     const videoHTML = p.video ? `
       <div class="video-player">
-        <video src="${p.video}" controls preload="metadata" autoplay loop muted playsinline></video>
+        <video src="${p.video}" controls preload="auto" autoplay loop muted playsinline></video>
       </div>` : "";
+    const playVideo = () => {
+      const vid = detail.querySelector("video");
+      if (vid) vid.play().catch(() => {});
+    };
 
     if (p.cat === "photo") {
       const photos = p.cells.filter(c => c.src);
@@ -1245,6 +1249,7 @@ function load(id) {
           </div>
         `;
         detail.classList.remove("loading");
+        playVideo();
         detail.querySelector(".pp").addEventListener("click", () => { if (pageIdx > 0) { pageIdx--; renderPhoto(); } });
         detail.querySelector(".pn").addEventListener("click", () => { if (pageIdx + 1 < pages.length) { pageIdx++; renderPhoto(); } });
       }
@@ -1291,6 +1296,7 @@ function load(id) {
         ${bodyHTML}
       `;
       detail.classList.remove("loading");
+      playVideo();
     }
   }, 150);
 }
