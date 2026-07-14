@@ -890,9 +890,14 @@ const PROJECTS = [
   {
     id: "dandy-streetwear", cat: "misc",
     title: "Dandy Streetwear",
-    meta: "fashion · brand",
+    meta: "fashion · brand · custom shirts",
     cells: [],
-    comingSoon: true
+    embeds: [
+      { permalink: "https://www.instagram.com/p/ChNayS7ulb0/" },
+      { permalink: "https://www.instagram.com/p/ChdDk-sPTz7/" },
+      { permalink: "https://www.instagram.com/p/ChPZtmvODvx/" },
+      { permalink: "https://www.instagram.com/p/ChvHoj7v2fz/" }
+    ]
   }
 
 ];
@@ -1192,7 +1197,7 @@ function load(id) {
             data-instgrm-version="14"
             style="background:#fff;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,.5),0 1px 10px 0 rgba(0,0,0,.15);margin:0;max-width:540px;min-width:280px;padding:0;width:100%">
           </blockquote>
-          <div class="embed-caption">${e.title} · ${e.views} views · ${e.likes} likes · ${e.client}</div>
+          ${e.title ? `<div class="embed-caption">${e.title}${e.views ? ` · ${e.views} views` : ""}${e.likes ? ` · ${e.likes} likes` : ""}${e.client ? ` · ${e.client}` : ""}</div>` : ""}
         </div>`).join("");
       detail.innerHTML = `
         <h1>${p.title}</h1>
