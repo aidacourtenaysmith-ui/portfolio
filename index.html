@@ -405,14 +405,12 @@ header nav a:hover { color: var(--text-strong); }
   width: auto;
   height: auto;
 }
-.photo-pair.photo-triple {
-  gap: 10px;
-}
-.photo-triple img {
-  max-width: calc(33.33% - 7px);
-  max-height: calc(100vh - 280px);
+.photo-landscape img {
+  display: block;
   width: 100%;
-  object-fit: cover;
+  max-width: 100%;
+  max-height: calc(100vh - 220px);
+  object-fit: contain;
 }
 .photo-nav {
   display: flex;
@@ -887,11 +885,11 @@ const PROJECTS = [
     cells: [
       { tag: "ADS05518",     src: "photos/other/ADS05518 copy.jpg" },
       { tag: "ADS05542",     src: "photos/other/ADS05542 copy.jpg" },
-      { tag: "000017700026", src: "photos/film/000017700026 copy.jpg", tall: true },
-      { tag: "001305470029", src: "photos/film/001305470029 copy.jpg" },
-      { tag: "ADS04670",     src: "photos/other/ADS04670.jpg", triple: true },
-      { tag: "ADS04686",     src: "photos/other/ADS04686.jpg" },
-      { tag: "ADS04689",     src: "photos/other/ADS04689.jpg" },
+      { tag: "000017700026", src: "photos/film/000017700026 copy.jpg" },
+      { tag: "001305470029", src: "photos/film/001305470029 copy.jpg", landscape: true },
+      { tag: "ADS04670",     src: "photos/other/ADS04670.jpg",         landscape: true },
+      { tag: "ADS04686",     src: "photos/other/ADS04686.jpg",         landscape: true },
+      { tag: "ADS04689",     src: "photos/other/ADS04689.jpg",         landscape: true },
       { tag: "ADS05662",     src: "photos/other/ADS05662 copy.jpg" },
       { tag: "ADS05663",     src: "photos/other/ADS05663-Enhanced-NR copy.jpg" }
     ]
@@ -1199,43 +1197,42 @@ function load(id) {
 
     if (p.cat === "photo") {
       const photos = p.cells.filter(c => c.src);
-      let idx = 0;
+      // build pages: landscape photos get their own page, portraits pair up
+      const pages = [];
+      let pi = 0;
+      while (pi < photos.length) {
+        if (photos[pi].landscape) {
+          pages.push([photos[pi]]); pi++;
+        } else if (pi + 1 < photos.length && !photos[pi + 1].landscape) {
+          pages.push([photos[pi], photos[pi + 1]]); pi += 2;
+        } else {
+          pages.push([photos[pi]]); pi++;
+        }
+      }
+      let pageIdx = 0;
       function renderPhoto() {
-        const a = photos[idx];
-        const isTriple = a && a.triple && photos[idx + 2] !== undefined;
-        const step = isTriple ? 3 : 2;
-        const batch = photos.slice(idx, idx + step);
-        const last = idx + step - 1;
-        const countLabel = batch.length > 1
-          ? `${idx + 1}–${Math.min(idx + step, photos.length)} / ${photos.length}`
-          : `${idx + 1} / ${photos.length}`;
+        const batch = pages[pageIdx];
+        const isLandscape = batch.length === 1 && batch[0].landscape;
+        const countLabel = `${pageIdx + 1} / ${pages.length}`;
         detail.innerHTML = `
           <h1>${p.title}</h1>
           <div class="meta">${p.meta}</div>
           ${videoHTML}
           <div class="photo-viewer">
-            <div class="photo-pair${isTriple ? " photo-triple" : ""}">
+            <div class="${isLandscape ? "photo-landscape" : "photo-pair"}">
               ${batch.map(ph => `<img src="${ph.src}" alt="${ph.tag}">`).join("")}
             </div>
             <div class="photo-nav">
-              <button class="pp" ${idx === 0 ? "disabled" : ""}>&larr; prev</button>
+              <button class="pp" ${pageIdx === 0 ? "disabled" : ""}>&larr; prev</button>
               <span class="photo-count">${countLabel}</span>
-              <button class="pn" ${idx + step >= photos.length ? "disabled" : ""}>next &rarr;</button>
+              <button class="pn" ${pageIdx + 1 >= pages.length ? "disabled" : ""}>next &rarr;</button>
             </div>
             <div class="photo-tag">${batch.map(ph => ph.tag).join(" · ")}</div>
           </div>
         `;
         detail.classList.remove("loading");
-        detail.querySelector(".pp").addEventListener("click", () => {
-          if (idx > 0) {
-            const prevA = photos[idx - (photos[idx - 1]?.triple ? 3 : 2)];
-            idx = Math.max(0, idx - (prevA?.triple ? 3 : 2));
-            renderPhoto();
-          }
-        });
-        detail.querySelector(".pn").addEventListener("click", () => {
-          if (idx + step < photos.length) { idx += step; renderPhoto(); }
-        });
+        detail.querySelector(".pp").addEventListener("click", () => { if (pageIdx > 0) { pageIdx--; renderPhoto(); } });
+        detail.querySelector(".pn").addEventListener("click", () => { if (pageIdx + 1 < pages.length) { pageIdx++; renderPhoto(); } });
       }
       renderPhoto();
     } else if (p.embeds) {
