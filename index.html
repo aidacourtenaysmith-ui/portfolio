@@ -422,6 +422,9 @@ header nav a:hover { color: var(--text-strong); }
   max-width: 540px;
 }
 .substack-embed { max-width: 600px; margin-top: 16px; }
+.track-list { display: flex; flex-direction: column; gap: 28px; margin-top: 24px; max-width: 540px; }
+.track-title { font-size: 13px; color: var(--text-strong); margin-bottom: 10px; letter-spacing: 0.03em; }
+.track audio { width: 100%; display: block; }
 .embed-caption {
   margin-top: 8px;
   font-size: 11px;
@@ -930,15 +933,14 @@ const PROJECTS = [
     title: "Gallery",
     meta: "ongoing · film + digital",
     cells: [
-      { tag: "ADS05518",     src: "photos/other/ADS05518 copy.jpg" },
-      { tag: "ADS05542",     src: "photos/other/ADS05542 copy.jpg" },
-      { tag: "000017700026", src: "photos/film/000017700026 copy.jpg" },
-      { tag: "001305470029", src: "photos/film/001305470029 copy.jpg", landscape: true },
-      { tag: "ADS04670",     src: "photos/other/ADS04670.jpg",         landscape: true },
-      { tag: "ADS04686",     src: "photos/other/ADS04686.jpg",         landscape: true },
-      { tag: "ADS04689",     src: "photos/other/ADS04689.jpg",         landscape: true },
-      { tag: "ADS05662",     src: "photos/other/ADS05662 copy.jpg" },
-      { tag: "ADS05663",     src: "photos/other/ADS05663-Enhanced-NR copy.jpg" }
+      { tag: "000026210032", src: "photos/000026210032 copy.jpg" },
+      { tag: "000034860011", src: "photos/000034860011 copy.jpg" },
+      { tag: "000039750019", src: "photos/000039750019 copy.jpg", landscape: true },
+      { tag: "redsandbeach", src: "photos/redsandbeach copy.jpg", landscape: true },
+      { tag: "000027530004", src: "photos/000027530004 copy.jpg" },
+      { tag: "000034860014", src: "photos/000034860014 copy.jpg" },
+      { tag: "001305470029", src: "photos/001305470029 copy.jpg", landscape: true },
+      { tag: "000017700026", src: "photos/000017700026 copy.jpg" }
     ]
   },
 
@@ -976,7 +978,10 @@ const PROJECTS = [
     title: "Listen",
     meta: "ongoing · original projects",
     cells: [],
-    comingSoon: true
+    tracks: [
+      { title: "Day Drinking",    src: "music/daydrinking.m4a" },
+      { title: "Spirit Airlines", src: "music/spiritairlines.m4a" }
+    ]
   },
 
   /* ---- MISC ---- */
@@ -1333,6 +1338,19 @@ function load(id) {
         script.src = "https://www.instagram.com/embed.js";
         document.body.appendChild(script);
       }
+    } else if (p.tracks) {
+      detail.innerHTML = `
+        <h1>${p.title}</h1>
+        <div class="meta">${p.meta}</div>
+        <div class="track-list">
+          ${p.tracks.map(t => `
+            <div class="track">
+              <div class="track-title">${t.title}</div>
+              <audio controls preload="metadata" src="${t.src}"></audio>
+            </div>`).join("")}
+        </div>
+      `;
+      detail.classList.remove("loading");
     } else if (p.substack) {
       detail.innerHTML = `
         <h1>${p.title}</h1>
