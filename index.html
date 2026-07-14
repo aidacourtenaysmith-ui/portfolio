@@ -422,12 +422,21 @@ header nav a:hover { color: var(--text-strong); }
   max-width: 540px;
 }
 .substack-embed { max-width: 600px; margin-top: 16px; }
+.about-body, .music-body {
+  display: flex;
+  gap: 36px;
+  align-items: flex-start;
+  margin-top: 8px;
+}
+.about-text { flex: 1; min-width: 0; }
+.music-body .track-list { flex: 1; min-width: 0; margin-top: 24px; }
 .about-photo, .section-photo {
   display: block;
-  width: 100%;
-  max-width: 420px;
+  width: 240px;
+  max-width: 40%;
   height: auto;
-  margin: 8px 0 24px;
+  flex-shrink: 0;
+  margin-top: 24px;
 }
 .track-list { display: flex; flex-direction: column; gap: 28px; margin-top: 24px; max-width: 540px; }
 .track-title { font-size: 13px; color: var(--text-strong); margin-bottom: 10px; letter-spacing: 0.03em; }
@@ -613,6 +622,8 @@ footer {
   .wrap { grid-template-columns: 1fr; padding: 40px 20px 64px; gap: 48px; }
   footer { padding: 0 20px 32px; }
   #welcome-box { display: none; }
+  .about-body, .music-body { flex-direction: column; }
+  .about-photo, .section-photo { max-width: 100%; width: 260px; }
   #landing {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -663,9 +674,13 @@ footer {
   <div class="about-wrap">
     <button class="back" id="aboutBackBtn">&larr; back</button>
     <h1>Aida Courtenay-Smith</h1>
-    <img class="about-photo" src="about.jpg" alt="Aida sitting on a rock above the Point Reyes coastline">
-    <p>Aida Courtenay-Smith is an interdisciplinary artist specializing in filmmaking and digital media. Drawing inspiration from nature, beauty, and place — Asheville, the Bay Area, and Maui — she moves fluidly between writing, video and image-making, and new adventures that continually shape her creative perspective.</p>
-    <p>For the past two years, Aida worked as a content creator, producing and editing short documentaries, music performances, and educational spiritual content. She has since made the deliberate choice to invest in her own creative vision: building a personal YouTube channel to document her life and journey, while channeling her passion for small business and storytelling into freelance marketing and media work for aligned brands and creators.</p>
+    <div class="about-body">
+      <div class="about-text">
+        <p>Aida Courtenay-Smith is an interdisciplinary artist specializing in filmmaking and digital media. Drawing inspiration from nature, beauty, and place — Asheville, the Bay Area, and Maui — she moves fluidly between writing, video and image-making, and new adventures that continually shape her creative perspective.</p>
+        <p>For the past two years, Aida worked as a content creator, producing and editing short documentaries, music performances, and educational spiritual content. She has since made the deliberate choice to invest in her own creative vision: building a personal YouTube channel to document her life and journey, while channeling her passion for small business and storytelling into freelance marketing and media work for aligned brands and creators.</p>
+      </div>
+      <img class="about-photo" src="about.jpg" alt="Aida sitting on a rock above the Point Reyes coastline">
+    </div>
   </div>
 </section>
 
@@ -1381,13 +1396,15 @@ function load(id) {
       detail.innerHTML = `
         <h1>${p.title}</h1>
         <div class="meta">${p.meta}</div>
-        ${p.photo ? `<img class="section-photo" src="${p.photo.src}" alt="${p.photo.alt}">` : ""}
-        <div class="track-list">
-          ${p.tracks.map(t => `
-            <div class="track">
-              <div class="track-title">${t.title}</div>
-              <audio controls preload="metadata" src="${t.src}"></audio>
-            </div>`).join("")}
+        <div class="music-body">
+          <div class="track-list">
+            ${p.tracks.map(t => `
+              <div class="track">
+                <div class="track-title">${t.title}</div>
+                <audio controls preload="metadata" src="${t.src}"></audio>
+              </div>`).join("")}
+          </div>
+          ${p.photo ? `<img class="section-photo" src="${p.photo.src}" alt="${p.photo.alt}">` : ""}
         </div>
       `;
       detail.classList.remove("loading");
