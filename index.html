@@ -376,6 +376,7 @@ header nav a:hover { color: var(--text-strong); }
 /* video player */
 .video-player { max-width: 720px; margin-bottom: 32px; }
 .video-player video { display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #000; }
+.video-player iframe { display: block; width: 100%; aspect-ratio: 16/9; border: 0; background: #000; }
 
 /* instagram embed grid */
 .embed-grid {
@@ -879,14 +880,14 @@ const PROJECTS = [
     id: "getting-out-of-bed", cat: "video",
     title: "Getting Out of Bed",
     meta: "writer · director · actor · editor",
-    video: "videos/getting-out-of-bed.mp4",
+    youtube: "bmI2302W32M",
     cells: []
   },
   {
     id: "memories-cameron-stenger", cat: "video",
     title: "Memories — Cameron Stenger",
     meta: "music video · director · cinematographer · editor",
-    video: "videos/MemoriesCameronStenger.mp4",
+    youtube: "Xj7PA8XZOCQ",
     cells: []
   },
   {
@@ -1217,7 +1218,10 @@ function load(id) {
   detail.classList.add("loading");
 
   setTimeout(() => {
-    const videoHTML = p.video ? `
+    const videoHTML = p.youtube ? `
+      <div class="video-player">
+        <iframe src="https://www.youtube-nocookie.com/embed/${p.youtube}?autoplay=1&mute=1&rel=0&playsinline=1" title="${p.title}" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>` : p.video ? `
       <div class="video-player">
         <video src="${p.video}" controls preload="auto" autoplay loop muted playsinline></video>
       </div>` : "";
