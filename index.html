@@ -447,6 +447,18 @@ header nav a:hover { color: var(--text-strong); }
   margin-bottom: 20px;
 }
 
+/* ---------- external link ---------- */
+.ext-link {
+  display: inline-block;
+  margin-top: 24px;
+  font-size: 13px;
+  color: var(--text-strong);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  letter-spacing: 0.02em;
+}
+.ext-link:hover { opacity: 0.65; }
+
 /* ---------- coming soon ---------- */
 .coming-soon {
   font-size: 12px;
@@ -804,7 +816,7 @@ const PROJECTS = [
     title: "YouTube Channel",
     meta: "ongoing · creator",
     cells: [],
-    comingSoon: true
+    link: { url: "https://www.youtube.com/@aidacourtenaysmith", label: "@aidacourtenaysmith" }
   },
   {
     id: "editing-reel", cat: "video",
@@ -1213,7 +1225,9 @@ function load(id) {
         document.body.appendChild(script);
       }
     } else {
-      const bodyHTML = p.comingSoon
+      const bodyHTML = p.link
+        ? `<a class="ext-link" href="${p.link.url}" target="_blank" rel="noopener">${p.link.label} &nearr;</a>`
+        : p.comingSoon
         ? `<div class="coming-soon">coming soon.</div>`
         : `<div class="library">
           ${p.cells.map(c => `
