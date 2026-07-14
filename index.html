@@ -581,7 +581,19 @@ footer {
   .scene-obj[data-cat="photo"] svg,
   .scene-obj[data-cat="music"] svg { width: 72px; }
   .scene-obj .label { opacity: 1; font-size: 10px; }
-  .avatar { display: none; }
+  .avatar {
+    grid-column: 1 / -1;
+    justify-self: center;
+    margin-top: 40px;
+    animation-name: breathe-mobile;
+  }
+  @keyframes breathe-mobile {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-4px); }
+  }
+  .avatar svg { width: 96px; }
+  #landing { padding: 72px 24px 96px; }
+  footer { margin-top: 48px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
