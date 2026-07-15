@@ -1236,7 +1236,7 @@ const list = document.getElementById("projectList");
 const detail = document.getElementById("detail");
 const catLabel = document.getElementById("catLabel");
 
-function openCategory(catId) {
+function openCategory(catId, push = true) {
   const cat = CATEGORIES.find(c => c.id === catId);
   const projects = PROJECTS.filter(p => p.cat === catId);
 
@@ -1257,24 +1257,27 @@ function openCategory(catId) {
   applyTheme(THEMES[0]);
   if (projects.length) load(projects[0].id);
   window.scrollTo({ top: 0 });
+  if (push) setPath("/" + CAT_SLUGS[catId] + "/");
 }
 
 const aboutSection = document.getElementById("about");
 
-function goHome() {
+function goHome(push = true) {
   workSection.style.display = "none";
   aboutSection.style.display = "none";
   landing.style.display = "";
   applyTheme(THEMES[9]);
   window.scrollTo({ top: 0 });
+  if (push) setPath("/");
 }
 
-function openAbout() {
+function openAbout(push = true) {
   landing.style.display = "none";
   workSection.style.display = "none";
   aboutSection.style.display = "block";
   applyTheme(THEMES[0]);
   window.scrollTo({ top: 0 });
+  if (push) setPath("/about/");
 }
 
 document.getElementById("backBtn").addEventListener("click", goHome);
@@ -1549,6 +1552,34 @@ function applyTheme(t, pop) {
 }
 
 applyTheme(THEMES[9]);
+
+/* ---------- URL routing ---------- */
+const CAT_SLUGS = { writing: "writing", video: "video", photo: "gallery", music: "music", misc: "misc" };
+const SLUG_TO_CAT = {};
+for (const id in CAT_SLUGS) SLUG_TO_CAT[CAT_SLUGS[id]] = id;
+
+function setPath(path) {
+  if (location.protocol === "file:") return;
+  history.pushState(null, "", path);
+}
+
+function routeTo(path) {
+  const seg = path.replace(/^\/+|\/+$/g, "");
+  if (!seg) goHome(false);
+  else if (seg === "about") openAbout(false);
+  else if (SLUG_TO_CAT[seg]) openCategory(SLUG_TO_CAT[seg], false);
+  else goHome(false);
+}
+
+window.addEventListener("popstate", () => routeTo(location.pathname));
+
+const entrySlug = new URLSearchParams(location.search).get("p");
+if (entrySlug && (SLUG_TO_CAT[entrySlug] || entrySlug === "about")) {
+  history.replaceState(null, "", "/" + entrySlug + "/");
+  routeTo("/" + entrySlug + "/");
+} else if (location.pathname !== "/" && location.protocol !== "file:") {
+  routeTo(location.pathname);
+}
 </script>
 
 </body>
