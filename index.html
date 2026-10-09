@@ -458,6 +458,7 @@ footer {
 <header>
   <div class="name" id="homeLink" role="button" tabindex="0">Aida Courtenay-Smith</div>
   <nav>
+    <a href="/about/" id="aboutNavLink">About</a>
     <a href="mailto:aidacourtenaysmith@gmail.com">Contact</a>
   </nav>
 </header>
@@ -818,6 +819,8 @@ document.getElementById("aboutBackBtn").addEventListener("click", goHome);
 const homeLink = document.getElementById("homeLink");
 homeLink.addEventListener("click", goHome);
 homeLink.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") goHome(); });
+
+document.getElementById("aboutNavLink").addEventListener("click", e => { e.preventDefault(); openAbout(); });
 
 function load(id) {
   const p = PROJECTS.find(x => x.id === id);
