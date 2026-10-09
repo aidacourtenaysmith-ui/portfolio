@@ -76,262 +76,77 @@ header nav a:hover { color: var(--text-strong); }
 
 /* ---------- landing ---------- */
 #landing {
-  position: relative;
-  height: calc(100vh - 130px);
-  min-height: 480px;
-  overflow: hidden;
+  padding: 56px 40px 96px;
+  max-width: 880px;
 }
 
-/* ---------- room ---------- */
-.room {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+/* ---------- featured list ---------- */
+.featured-list { list-style: none; }
+
+.featured-item {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--cell);
 }
 
-/* floor */
-.room::before {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  height: 28%;
-  background: var(--cell);
-}
-
-/* baseboard */
-.room::after {
-  content: '';
-  position: absolute;
-  bottom: 28%;
-  left: 0; right: 0;
-  height: 7px;
-  background: var(--text-faint);
-  opacity: 0.45;
-}
-
-/* window — pixel art SVG fills this div */
-.room-window {
-  position: absolute;
-  top: 4%;
-  left: 4%;
-  width: 180px;
-  height: 264px;
-  image-rendering: pixelated;
-  z-index: 1;
-}
-
-/* oriental rug — pixel art SVG fills this div */
-.room-rug {
-  position: absolute;
-  bottom: 0;
-  left: 4%;
-  right: 4%;
-  height: 13%;
-  image-rendering: pixelated;
-  z-index: 1;
-}
-
-/* wooden desk — writing */
-.furn-desk {
-  position: absolute;
-  left: 3%;
-  bottom: 28%;
-  width: 180px;
-  height: 84px;
-  image-rendering: pixelated;
-  z-index: 1;
-}
-
-/* entertainment center — music */
-.furn-cabinet {
-  position: absolute;
-  left: 21%;
-  bottom: 28%;
-  width: 144px;
-  height: 108px;
-  image-rendering: pixelated;
-  z-index: 1;
-}
-
-/* wall shelf — photo + video */
-.furn-shelf {
-  position: absolute;
-  left: 57%;
-  right: 5%;
-  bottom: calc(28% + 188px);
-  height: 48px;
-  image-rendering: pixelated;
-  z-index: 1;
-}
-
-.scene-obj {
-  position: absolute;
+.featured-title {
   background: none;
   border: none;
-  cursor: pointer;
   font-family: inherit;
-  display: flex;
-  flex-direction: column-reverse;
-  align-items: center;
-  gap: 8px;
-  bottom: 28%;
-  transform: translateX(-50%);
-  z-index: 2;
+  font-size: 14px;
+  color: var(--text-strong);
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
 }
+a.featured-title { display: inline-block; }
+.featured-title:hover { text-decoration: underline; text-underline-offset: 3px; }
+.featured-title:focus-visible { outline: 1px solid var(--text-strong); outline-offset: 4px; }
 
-.scene-obj .icon-holder { display: block; line-height: 0; position: relative; }
-
-/* phonograph music notes */
-.music-notes {
-  position: absolute;
-  top: -30px;
-  left: 0;
-  width: 60%;
-  height: 30px;
-  pointer-events: none;
-}
-.scene-obj .music-notes .note {
-  position: absolute;
-  bottom: 0;
-  width: 11px;
-  height: auto;
-  fill: #f0c030;
-  opacity: 0;
-  shape-rendering: crispEdges;
-  filter: none;
-  transition: none;
-  animation: noteFloat 3s ease-out infinite;
-}
-.scene-obj .music-notes .note.n1 { left: 4%; }
-.scene-obj .music-notes .note.n2 { left: 38%; width: 14px; animation-delay: 1s; }
-.scene-obj .music-notes .note.n3 { left: 72%; width: 9px; animation-delay: 2s; }
-
-@keyframes noteFloat {
-  0%   { transform: translateY(0) translateX(0); opacity: 0; }
-  15%  { opacity: 0.9; }
-  55%  { transform: translateY(-16px) translateX(-3px); opacity: 0.65; }
-  100% { transform: translateY(-30px) translateX(3px); opacity: 0; }
-}
-
-.scene-obj svg {
-  width: 88px;
-  height: auto;
-  image-rendering: pixelated;
-  shape-rendering: crispEdges;
-  transition: transform 0.2s ease;
-  filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
-}
-
-.scene-obj:hover svg { transform: scale(1.1) translateY(-6px); }
-
-.scene-obj svg.pop { animation: pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
-
-@keyframes pop {
-  0%   { transform: scale(1); }
-  35%  { transform: scale(1.28) rotate(-4deg); }
-  65%  { transform: scale(0.92) rotate(3deg); }
-  100% { transform: scale(1) rotate(0deg); }
-}
-
-.scene-obj:focus-visible { outline: 1px solid var(--text-strong); outline-offset: 6px; }
-
-.scene-obj .label {
+.featured-item .kicker {
   color: var(--text-faint);
   font-size: 11px;
-  padding: 3px 8px;
-  border-radius: 10px;
-  white-space: nowrap;
-  background: rgba(0,0,0,0);
-  opacity: 0;
-  transition: opacity 0.2s ease, background 0.2s ease;
+  letter-spacing: 0.02em;
 }
-.scene-obj:hover .label {
-  opacity: 1;
+
+.featured-soon { cursor: default; }
+.featured-soon .featured-title { color: var(--text); cursor: default; }
+.featured-soon .soon-tag {
+  color: var(--text-faint);
+  font-size: 11px;
+  font-style: italic;
+  margin-left: auto;
+}
+
+/* featured reel — pinned at top, larger */
+.featured-reel { display: block; padding: 0 0 32px; border-bottom: 1px solid var(--cell); margin-bottom: 8px; }
+.featured-reel-trigger {
+  display: block;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+}
+.featured-reel-trigger video {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+  background: #000;
+}
+.featured-reel-trigger .featured-title {
+  display: block;
+  margin-top: 12px;
+  font-size: 14px;
   color: var(--text-strong);
-  background: rgba(0,0,0,0.18);
+  cursor: pointer;
 }
-
-/* avatar */
-.avatar {
-  position: absolute;
-  bottom: 28%;
-  left: 46%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  animation: breathe 5s ease-in-out infinite;
-  user-select: none;
-  z-index: 2;
-}
-
-@keyframes breathe {
-  0%, 100% { transform: translateX(-50%) translateY(0); }
-  50%       { transform: translateX(-50%) translateY(-4px); }
-}
-
-.avatar svg {
-  width: 108px;
-  height: auto;
-  shape-rendering: crispEdges;
-  filter: drop-shadow(0 6px 10px rgba(0,0,0,0.10));
-}
-
-.avatar svg.jump {
-  animation: jump 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
-  transform-origin: bottom center;
-}
-
-@keyframes jump {
-  0%   { transform: translateY(0) scale(1, 1); }
-  18%  { transform: translateY(3px) scale(1.1, 0.86); }
-  50%  { transform: translateY(-30px) scale(0.94, 1.1); }
-  78%  { transform: translateY(0) scale(1.06, 0.92); }
-  100% { transform: translateY(0) scale(1, 1); }
-}
-
-/* coffee cup steam */
-.avatar .steam {
-  position: absolute;
-  right: -2px;
-  bottom: 42%;
-  width: 14px;
-  height: 22px;
-  pointer-events: none;
-}
-.avatar .steam::before,
-.avatar .steam::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  width: 3px;
-  height: 6px;
-  border-radius: 2px;
-  background: rgba(220, 210, 195, 0.75);
-  animation: steamRise 2s ease-out infinite;
-  opacity: 0;
-}
-.avatar .steam::before { left: 1px; }
-.avatar .steam::after  { left: 8px; animation-delay: 0.75s; }
-
-@keyframes steamRise {
-  0%   { transform: translateY(0) scaleX(1); opacity: 0; }
-  20%  { opacity: 0.8; }
-  70%  { transform: translateY(-14px) scaleX(1.6); opacity: 0.3; }
-  100% { transform: translateY(-22px) scaleX(0.5); opacity: 0; }
-}
-
-/* scene positions */
-.scene-obj[data-cat="writing"] { left: 11%; bottom: calc(28% + 84px); }
-.scene-obj[data-cat="music"]   { left: 24%; bottom: calc(28% + 108px); }
-.scene-obj[data-cat="photo"]   { left: 50%; transform: translateX(-50%); bottom: calc(28% + 195px); }
-.scene-obj[data-cat="misc"]    { left: 85%; }
-.scene-obj[data-cat="video"]   { left: 78%; bottom: calc(28% + 236px); }
-
-/* icon size overrides */
-.scene-obj[data-cat="music"] svg  { width: 144px; }
-.scene-obj[data-cat="photo"] svg  { width: 220px; }
+.featured-reel-trigger:hover .featured-title { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- work view ---------- */
 #work { display: none; }
@@ -351,6 +166,7 @@ header nav a:hover { color: var(--text-strong); }
 }
 
 .index ul { list-style: none; }
+.index li { margin-bottom: 16px; }
 
 .index button {
   display: block;
@@ -359,15 +175,24 @@ header nav a:hover { color: var(--text-strong); }
   padding: 0;
   font-family: inherit;
   font-size: inherit;
-  line-height: 2.1;
+  line-height: 1.5;
   color: var(--text);
   cursor: pointer;
   text-align: left;
 }
 
-.index button:hover { color: var(--text-strong); text-decoration: underline; text-underline-offset: 3px; }
+.index .idx-title { display: block; }
+.index .idx-meta {
+  display: block;
+  color: var(--text-faint);
+  font-size: 11px;
+  line-height: 1.6;
+  margin-top: 3px;
+}
+
+.index button:hover .idx-title { color: var(--text-strong); text-decoration: underline; text-underline-offset: 3px; }
 .index button:focus-visible { outline: 1px solid var(--text-strong); outline-offset: 3px; }
-.index button.active {
+.index button.active .idx-title {
   color: var(--text-strong);
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -393,6 +218,35 @@ header nav a:hover { color: var(--text-strong); }
 .detail .path { color: var(--text-faint); font-size: 11px; margin-bottom: 4px; }
 .detail h1 { font-size: 13px; font-weight: 500; color: var(--text-strong); margin-bottom: 24px; }
 .detail .meta { color: var(--text-faint); font-size: 12px; margin-bottom: 24px; line-height: 1.9; }
+.detail .blurb { color: var(--text); font-size: 13px; line-height: 1.8; margin-bottom: 24px; max-width: 560px; }
+
+.detail .dek {
+  color: var(--text-strong);
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.8;
+  margin-bottom: 28px;
+  max-width: 640px;
+}
+
+.article-body {
+  max-width: 640px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 2;
+  margin-bottom: 28px;
+}
+.article-body p { margin-bottom: 20px; }
+.article-body strong { color: var(--text-strong); font-weight: 500; }
+.article-body em { font-style: italic; }
+.article-body ol { margin: 0 0 20px 20px; }
+.article-body ol li { margin-bottom: 14px; }
+.article-figure { margin: 8px 0 28px; }
+.article-figure img { display: block; width: 100%; height: auto; }
+
+.project-photo { max-width: 540px; margin: 0 0 28px; }
+.project-photo img { display: block; width: 100%; height: auto; }
+.project-photo figcaption { margin-top: 8px; }
 
 .library {
   display: grid;
@@ -426,6 +280,19 @@ header nav a:hover { color: var(--text-strong); }
 .video-player { max-width: 720px; margin-bottom: 32px; }
 .video-player video { display: block; width: 100%; aspect-ratio: 16/9; object-fit: cover; background: #000; }
 .video-player iframe { display: block; width: 100%; aspect-ratio: 16/9; border: 0; background: #000; }
+.video-player.portrait { max-width: 360px; }
+.video-player.portrait video { aspect-ratio: 9/16; object-fit: contain; }
+
+.video-pair {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  max-width: 720px;
+  margin-bottom: 32px;
+}
+.video-pair-item { flex: 1 1 260px; max-width: 360px; }
+.video-pair-item .video-player { max-width: none; margin-bottom: 0; }
+.flyer-image { display: block; width: 100%; height: auto; }
 
 /* instagram embed grid */
 .embed-grid {
@@ -545,57 +412,6 @@ header nav a:hover { color: var(--text-strong); }
   letter-spacing: 0.04em;
 }
 
-/* ---------- welcome chatbox ---------- */
-/* pixel speech bubble — left of avatar, tail at bottom-right */
-#welcome-box {
-  position: absolute;
-  right: calc(54% + 15px);
-  bottom: calc(28% + 165px);
-  width: 220px;
-  z-index: 10;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
-}
-
-#welcome-box svg.bubble-svg {
-  display: block;
-  width: 220px;
-  height: auto;
-  image-rendering: pixelated;
-  shape-rendering: crispEdges;
-}
-
-#welcome-box .bubble-content {
-  position: absolute;
-  top: 8px;
-  left: 14px;
-  right: 14px;
-  bottom: 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  pointer-events: none;
-}
-
-#welcome-box .bubble-content p {
-  font-family: "Chicago", "Charcoal", "Geneva", monospace;
-  font-size: 11px;
-  font-weight: 700;
-  line-height: 1.65;
-  color: #000;
-}
-
-#welcome-box.hidden {
-  opacity: 0;
-  pointer-events: none;
-}
-
-/* avatar clickable */
-.avatar {
-  cursor: pointer;
-}
-
 /* ---------- footer ---------- */
 footer {
   padding: 0 40px 40px;
@@ -624,48 +440,11 @@ footer {
 /* ---------- responsive ---------- */
 @media (max-width: 760px) {
   header { padding: 24px 20px 0; gap: 20px; }
-  #landing {
-    height: auto;
-    min-height: 0;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 48px 40px;
-    padding: 64px 24px;
-  }
-  .room { display: none; }
-  .scene-obj, .avatar { position: static; transform: none; flex-direction: column; }
-  .scene-obj .label { opacity: 1; }
+  #landing { padding: 40px 20px 64px; }
   .wrap { grid-template-columns: 1fr; padding: 40px 20px 64px; gap: 48px; }
   footer { padding: 0 20px 32px; }
-  #welcome-box { display: none; }
   .about-body, .music-body { flex-direction: column; }
   .about-photo, .section-photo { max-width: 100%; width: 260px; }
-  #landing {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 32px 16px;
-    align-items: end;
-    justify-items: center;
-  }
-  .scene-obj { min-width: 0; width: 100%; align-items: center; }
-  .scene-obj svg,
-  .scene-obj[data-cat="photo"] svg,
-  .scene-obj[data-cat="music"] svg { width: 72px; }
-  .scene-obj .label { opacity: 1; font-size: 10px; }
-  .scene-obj[data-cat="photo"] { transform: translateX(12px); }
-  .avatar {
-    grid-column: 1 / -1;
-    justify-self: center;
-    margin-top: 40px;
-    animation-name: breathe-mobile;
-  }
-  @keyframes breathe-mobile {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-4px); }
-  }
-  .avatar svg { width: 96px; }
-  #landing { padding: 72px 24px 96px; }
   footer { margin-top: 48px; }
 }
 
@@ -684,7 +463,7 @@ footer {
 </header>
 
 <!-- ============ LANDING ============ -->
-<section id="landing" aria-label="Categories"></section>
+<section id="landing" aria-label="Featured work"></section>
 
 <!-- ============ ABOUT ============ -->
 <section id="about">
@@ -696,7 +475,7 @@ footer {
         <p>Aida Courtenay-Smith is an interdisciplinary artist specializing in filmmaking and digital media. Drawing inspiration from nature, beauty, and place — Asheville, the Bay Area, and Maui — she moves fluidly between writing, video and image-making, and new adventures that continually shape her creative perspective.</p>
         <p>For the past two years, Aida worked as a content creator, producing and editing short documentaries, music performances, and educational spiritual content. She has since made the deliberate choice to invest in her own creative vision: building a personal YouTube channel to document her life and journey, while channeling her passion for small business and storytelling into freelance marketing and media work for aligned brands and creators.</p>
       </div>
-      <img class="about-photo" src="about.jpg" alt="Aida sitting on a rock above the Point Reyes coastline">
+      <img class="about-photo" src="about.jpg?v=2" alt="Aida Courtenay-Smith holding a film camera in a mountain meadow">
     </div>
   </div>
 </section>
@@ -734,201 +513,9 @@ footer {
 
 <script>
 /* =========================================================
-   PIXEL ICONS — each icon is a grid of characters.
-   "." = transparent. Edit the palette or rows to redraw.
-   ========================================================= */
-const ICONS = {
-  /* open book — writing */
-  writing: {
-    palette: { O: "#f0a020", K: "#2a1200", W: "#faf5e8", L: "#a0a0b0" },
-    rows: [
-      "KOOOOOOOOOOOOOOK",
-      "KOWWWWWWKKWWWWOK",
-      "KOWLLLWWKKWWLLOK",
-      "KOWWWWWWKKWWWWOK",
-      "KOWLLLWWKKWWLLOK",
-      "KOWWWWWWKKWWWWOK",
-      "KOWLLLWWKKWWLLOK",
-      "KOWWWWWWKKWWWWOK",
-      "KOWLLLWWKKWWLLOK",
-      "KOWWWWWWKKWWWWOK",
-      "KOOOOOOOOOOOOOOK",
-      "................",
-      "................"
-    ]
-  },
-  /* film camera — video */
-  video: {
-    palette: { B: "#2b2b2e", G: "#4a4a50", W: "#e8e6df" },
-    rows: [
-      "..BBB...BBB.....",
-      ".BGGGB.BGGGB....",
-      ".BGBGB.BGBGB....",
-      ".BGGGB.BGGGB....",
-      "..BBB...BBB.....",
-      ".BBBBBBBBBBB....",
-      ".BGGGGGGGGGB.BB.",
-      ".BGGGGGGGGGBBGB.",
-      ".BGGGGWWGGGBBGB.",
-      ".BGGGGGGGGGB.BB.",
-      ".BBBBBBBBBBB....",
-      "....BB..........",
-      "...BBBB.........",
-      "..BB..BB........"
-    ]
-  },
-  /* framed film photo — gallery (landscape 22×14) */
-  photo: {
-    palette: {
-      F: "#a06830", S: "#7899b0", B: "#c0b8a8", G: "#4a7a28",
-      W: "#e0d8c8", w: "#a89888", K: "#181818", c: "#c0c0b8",
-      r: "#881010", R: "#8b2820", s: "#484040"
-    },
-    rows: [
-      "FFFFFFFFFFFFFFFFFFFFFF",
-      "FSSSSSSSSSSSSSSSSSSSSF",
-      "FSSSBBBBBBBBBBBBBBSSSF",
-      "FBBBGBBBBBBBBBBBBBBBBF",
-      "FBBBBBBBBBWWWWWWWWWWBF",
-      "FBWWWWWWWWWWWWWWWWWWBF",
-      "FBwwwwwwwwwwwwwwwwwwBF",
-      "FBwwwwwwwwwwwwwwwwwwBF",
-      "FBKccwwwwwwwwwwwwcKrBF",
-      "FssssssssssssssssssssF",
-      "FssssssssssssssssssssF",
-      "FRRRRRRRRRRRRRRRRRRRRF",
-      "FssssssssssssssssssssF",
-      "FFFFFFFFFFFFFFFFFFFFFF"
-    ]
-  },
-  /* phonograph — music */
-  music: {
-    palette: {
-      H: "#d4901a", h: "#f0c030", k: "#8a4808",
-      S: "#c0c0d0", s: "#888898",
-      B: "#8b3a18", b: "#b85a38", G: "#d4b020",
-      D: "#180800", T: "#3a2510", t: "#584030"
-    },
-    rows: [
-      "..hHHHHHHHHHHHk...",
-      ".hHHHHHHHHHHHHHk..",
-      "..hhHHHHHHHHHHhk..",
-      "....hhHHHHHHhhkS..",
-      "......hHHHHhkkSS..",
-      "......hHHhkSSs....",
-      "........kkSSs.....",
-      ".........SSs......",
-      "........sSTTTTTT..",
-      ".........TTTTTTTT.",
-      ".........TTtDtTTT.",
-      ".........TTTTTTTT.",
-      ".........DDDDDDD..",
-      ".........DbBBBbD..",
-      ".........DbGGGbD..",
-      ".........DDDDDDD..",
-      ".........D.....D..",
-      ".................."
-    ]
-  },
-  /* aida — orange-tinted glasses, open chore coat, white tee, jeans */
-  avatar: {
-    palette: {
-      H: "#4a3526",  /* hair */
-      S: "#e8bd9d",  /* skin */
-      s: "#d3a482",  /* skin shadow */
-      F: "#3a2f28",  /* glasses frame */
-      G: "#f08a2e",  /* orange lenses */
-      g: "#f7b264",  /* lens shine */
-      R: "#c97a6a",  /* smile */
-      O: "#f0a8a0",  /* blush */
-      E: "#e0b04c",  /* earrings */
-      B: "#3b5f8f",  /* chore coat */
-      L: "#2c4a73",  /* collar + pockets */
-      N: "#f4f2ec",  /* white shirt */
-      J: "#6d8cb0",  /* jeans */
-      j: "#5a7899",  /* jeans shading */
-      K: "#26262a",  /* shoes */
-      W: "#e8e6df",  /* soles */
-      U: "#f8f8f2",  /* mug white */
-      c: "#7b4218"   /* coffee brown */
-    },
-    rows: [
-      "....HHHHHHHHH.....",
-      "...HHHHHHHHHHH....",
-      "..HHHHHHHHHHHH....",
-      "..HHHHHHHHHHHHH...",
-      "..HHSSSSSSSSSHH...",
-      ".HHHSSSSSSSSSSHH..",
-      ".HHFGGGGFFGGGGFHH.",
-      ".HHFGgGGFFGGgGFHH.",
-      ".HEHSSOSSSSOSSHEH.",
-      ".HHHSSSSRRSSSSHHH.",
-      ".HHHsSSSSSSSSsHHH.",
-      ".HHH..SSSSSS..HHH.",
-      ".HHH.LLBNNBLL.HHH.",
-      ".HHHBBBNNNNBBBHHH.",
-      ".HHHBBBNNNNBBBHHH.",
-      "...BBBBNNNNBBBBUUU",
-      "...BLLBNNNNBLLBUcU",
-      "...BLLBNNNNBLLBUcU",
-      "...BBBBNNNNBBBBUcU",
-      "..SBBBBNNNNBBBBScU",
-      "...BBBBNNNNBBBBUcU",
-      "....JJJJJJJJJJ....",
-      ".JJJJJJJJJJJJJJJJ.",
-      "JJJJJJJJJJJJJJJJJJ",
-      "JJJJJJKKjjKKJJJJJJ",
-      "..WWWW....jj....WW"
-    ]
-  },
-
-  /* cardboard box — misc */
-  misc: {
-    palette: { B: "#c98a3e", D: "#9c6425", L: "#dda75c" },
-    rows: [
-      "................",
-      "..BBBBB..BBBBB..",
-      ".BLLLLLBBLLLLLB.",
-      ".BBBBBBDDBBBBBB.",
-      ".BLLLLLBBLLLLLB.",
-      ".BLLLLLBBLLLLLB.",
-      ".BLLLLLBBLLLLLB.",
-      ".BLLLLLBBLLLLLB.",
-      ".BLLLLLBBLLLLLB.",
-      ".BLLLLLBBLLLLLB.",
-      ".BBBBBBBBBBBBBB.",
-      "................"
-    ]
-  }
-};
-
-function iconSVG(icon, palette) {
-  const pal = palette || icon.palette;
-  const rows = icon.rows;
-  const h = rows.length, w = rows[0].length;
-  let rects = "";
-  for (let y = 0; y < h; y++) {
-    for (let x = 0; x < w; x++) {
-      const ch = rows[y][x];
-      if (ch !== ".") {
-        rects += `<rect x="${x}" y="${y}" width="1" height="1" fill="${pal[ch]}"/>`;
-      }
-    }
-  }
-  return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" aria-hidden="true">${rects}</svg>`;
-}
-
-/* =========================================================
-   CATEGORIES + PROJECT DATA — edit here.
+   PROJECT DATA — edit here.
    To use a real image in a cell: { tag: "...", src: "img.jpg" }
    ========================================================= */
-const CATEGORIES = [
-  { id: "writing", label: "writing" },
-  { id: "video",   label: "video" },
-  { id: "photo",   label: "gallery" },
-  { id: "music",   label: "music" },
-  { id: "misc",    label: "misc." }
-];
 
 const PROJECTS = [
 
@@ -941,9 +528,11 @@ const PROJECTS = [
     cells: []
   },
   {
-    id: "short-form", cat: "video",
-    title: "Short Form",
+    id: "ayurprana", cat: "video",
+    title: "AyurPrana+",
     meta: "social media editor · 820K+ views across platforms · AyurPrana+ · SoHum",
+    blurb: "Worked as a content creator (videography, editing, colorist) for the start-up spiritual media company AyurPrana+.",
+    photo: { src: "ayurprana-bts.jpg", alt: "Behind the scenes filming a podcast interview for AyurPrana+", caption: "Behind the scenes" },
     cells: [],
     embeds: [
       { permalink: "https://www.instagram.com/reel/DUIzHARFTk_/",  title: "Coffee, the Ayurvedic Way",        views: "482K",  likes: "18.6K+",  client: "AyurPrana+" },
@@ -953,9 +542,20 @@ const PROJECTS = [
     ]
   },
   {
+    id: "alien-lady-scene", cat: "video",
+    title: "Alien Lady Scene",
+    meta: "indie pilot editor",
+    blurb: "Co-editor for this scene in a recently released indie pilot, now on YouTube.",
+    youtube: "5LIhmBJxUeY",
+    youtubeStart: 1168,
+    photo: { src: "alien-lady-scene-bts.jpg", alt: "Behind the scenes editing the indie pilot in DaVinci Resolve", caption: "Behind the scenes" },
+    cells: []
+  },
+  {
     id: "getting-out-of-bed", cat: "video",
     title: "Getting Out of Bed",
     meta: "writer · director · actor · editor",
+    blurb: "A short film written, shot, and edited in a single day.",
     youtube: "bmI2302W32M",
     cells: []
   },
@@ -970,14 +570,27 @@ const PROJECTS = [
     id: "little-trees", cat: "video",
     title: "Little Trees",
     meta: "documentary · director · cinematography · editor",
+    blurb: "A documentary preserving the legacy of the NC Arboretum's curator, Arthur Joura.",
     youtube: "fPqBnDY8Fdw",
+    photo: { src: "little-trees-bts.jpg", alt: "Behind the scenes filming Little Trees in a greenhouse", caption: "Behind the scenes" },
     cells: []
   },
   {
     id: "resonate-chop", cat: "video",
     title: "resonate/chop",
-    meta: "video installation · editor",
+    meta: "audiovisual installation piece · editor",
+    blurb: "resonate/chop is an immersive audio/visual collaboration between Bryce Franich and Aida Courtenay-Smith, exploring the threshold between Self and disintegration.",
     youtube: "CSDNQ8gsH6s",
+    extraVideo: { src: "videos/resonate-chop-event.mp4", caption: "Footage from the event", portrait: true },
+    flyer: { src: "resonate-chop-flyer.jpg", alt: "resonate/chop event flyer", caption: "Event flyer" },
+    cells: []
+  },
+  {
+    id: "haunt", cat: "video",
+    title: "Haunt",
+    meta: "social media work · UGC · filmed and edited by Aida",
+    video: "videos/haunt.mp4",
+    portrait: true,
     cells: []
   },
 
@@ -1022,6 +635,15 @@ const PROJECTS = [
   },
 
   /* ---- WRITING ---- */
+  {
+    id: "will-barter-for-doula", cat: "writing",
+    title: "Will Barter for Doula",
+    meta: "essay · published September 6, 2026",
+    dek: "Does this make me a real artist?",
+    externalUrl: "https://aidacourtenaysmith.substack.com/p/will-barter-for-doula",
+    cells: [],
+    article: `<p>My mom recently unearthed a beautiful time capsule of her and my dad&#8217;s accounts of becoming parents. Being the creative, Bay Area parents they were&#8212;and remain to be to this day (just not in the Bay Area)&#8212;they took it upon themselves to write letters to me, dating all the way back in the year 2002; (the year before I was born) a firsthand, journal entry account of what it&#8217;s like to find out you have your first baby on the way. </p><p>I found this letter from my Dad: </p><figure class="article-figure"><img src="writing/wbfd-letter-1.jpg" alt="Handwritten letter, part 1 of 2"></figure><figure class="article-figure"><img src="writing/wbfd-letter-2.jpg" alt="Handwritten letter, part 2 of 2"></figure><p>And not only was my labor bartered for via massage and art, but it&#8217;s starting to feel like my whole life has been gifted to me in exchange for my creativity.  </p><p>Last week, I got a text from my mom saying </p><p>&#8220;you have no idea how much money is in your college fund!&#8221; </p><p>To which I thought, &#8220;you&#8217;re right, I do not.&#8221; </p><p>Last year, it had 35k, this year it has 57. That&#8217;s at least one indie film budget. </p><p>An important piece of context, is that I didn&#8217;t go to college right out of high school, I actually never went to college. I never had a desire to spend <em>anyone&#8217;s</em> money to fart around one specific town for four years. To me, it sounded like the opposite of how I wanted to kickoff my &#8216;big adult life&#8217; and I had spent enough time farting around Asheville for 11 years. So, I decided to plan a year. A year of adventure and travel that didn&#8217;t cost too much (so I didn&#8217;t have to get a job) a year of real freedom. </p><p>My first stop on the &#8216;freedom world tour&#8217; was my birthplace: Oakland, CA. An hour outside of foggy, romantic San Francisco. Not quite as romantic, slightly more gangster, slightly more affordable but in the end, not affordable enough with two kids and little support. I stayed with Mark and Cecilia Storr, surrogate grandparents of sorts. Two kooky, well-read liberal bayarealites in their 60s who were next-door neighbors to my parents in their first Berkeley apartment. Where I terrorized the neighbors with my newborn mania. Anyhow, Mark and Cecila generously helped my parents raise me. They drove me to school, babysat on date nights, and I even had my own room in their house. The same people who started college funds for me and my sister and helped my parents out of bankruptcy in 2008. Out of the kindness of their hearts, and their love for my parents. They may not have always been rich monetarily, but my parents have always been blessed with the creativity to figure it out. Each in their own way. Which has been one of the coolest thing to look out for in the scrapbook I was recently gifted. While my mom focuses more on recounting her emotions; positive and negative, consistently veering back to her belief that &#8220;although bringing a child into the world is scary, anything with this much love will always work out.&#8221;, my dad writes as if he&#8217;s deep in awe and wonder about everything (including the <em>finances</em> of having a child) Looking back, everything did work out. Even after a divorce, coparenting two kids and at times difficult partners, they have always remained friends. And as of two weeks ago, both me and now my sister have moved out, started our lives, and done so successfully and gracefully at that. My sister went to her dream school, out of state tuition at that&#8212;all on scholarships and the college fund from the Storrs. Well done Mom and Pops, somehow you did it. Even though at times, they probably both felt as if they were flying by the seat of their pants, they helped to make my sister&#8217;s dream come true, and I know they&#8217;ve done the same for me and continue to do so. It feels as if  my parents didn&#8217;t place such a heavy value on material wealth, they could see how wealthy they&#8217;ve always been. Both such wise souls full of spiritual knowledge, creativity, and a different way of seeing things. Imagination. </p><p>Growing up, there were times when I resented my parents for not having extra cash. Being the charismatic, charming lady I am, I was pretty popular in school, but I struggled with feeling like I&#8217;d never belong with the kids whose parents always bought them the &#8216;new cool thing.&#8217; Looking back, I&#8217;m grateful to my parents for questioning my intentions around consumerism, and whether I liked things because everyone else did, or because I actually had a connection with it. It&#8217;s lessons like these that have shaped me into such a snob artist type I guess&#8212;lol. Now, when I hang out with my parents as an adult, we&#8217;re always eating <em>quality</em> meals, drinking <em>quality</em> coffee, talking about our opinions about the <em>quality</em> of things. </p><p><strong>They gave me taste, and for that, I&#8217;ll always be grateful.</strong> </p><p>That being said, when you like nice things, you want your bank account to support you having those nice things. Although this fact brought stress to my parents and their lives plenty I&#8217;m sure, I also think they have taught me how to create the life that you want, no matter what your financial situation is. That,  just by training your nervous system to <em>receive</em>; money, favors, miracles, the perfect piece of furniture on the side of the road etc. everything that you are meant to have finds you. Now this lesson wasn&#8217;t taught explicitly and they probably have no idea that&#8217;s what they were doing, but sometimes you learn by watching. This one I learning by watching. Watching them, watching myself, watching them again and again, feeling things, making mistakes, correcting them, the way I usually learn things. Today, I feel as if I have everything I ever need and more, monetarily and spiritually too. Lots to learn, so much beauty to take in, and so many more experiences to make. </p><p>The curious thing about my Mom and Dad&#8217;s relationship to money is that, for a long time they existed on what I would call &#8216;opposite ends of the spectrum&#8217; from <em>loose</em> to <em>tight</em>. But as time has progressed, things seem to be balancing out. And here I am, with choices to make about how I want to be, because the different ways to be were so beautifully acted out in front of my eyes my entire life. </p><p>What I live by (as of today)</p><ol><li><p>There is a figurative second economy that rules the exchange of what we create. And the more we support the creation of something, the more it gets created by everyone who then, contributes their expression of that in the world, sculpting our worlds thoughts, actions, and overall landscape. We can call it the &#8216;economy of inspiration.&#8217; </p></li><li><p>You never know where the next door will open, but with a strong enough imagination, and a body that can hold a lot of sensation, you can pretty much cruise your way to your dream life if you can <em>see</em> a pathway and <em>stay</em> on it. </p></li><li><p>Generosity is key. The second you stop participating in the give and take of the universe, the second you get counted out of the pot. In other words, you have to &#8220;pay to play.&#8221; The universe doesn&#8217;t like freeloaders with nothing to contribute. Even if it&#8217;s donating your time to another person, to listen to their story for a minute, you don&#8217;t necessarily need to spend any real money.  </p></li></ol><p>So just like my parents did for me so long ago, I will continue write to them. A barter of sorts. Whether they read it or not, doesn&#8217;t matter (although they are my BIGGEST fans) but after seeing how many clues about my life I could unearth from this one artifact, you best believe I&#8217;m gonna keep on writin&#8217;      </p><p>- Aida</p>`
+  },
   {
     id: "follow-through", cat: "writing",
     title: "Follow Through",
@@ -1078,173 +700,65 @@ const PROJECTS = [
 
 ];
 
-/* =========================================================
-   ROOM PIXEL ART BUILDERS
-   ========================================================= */
-function pxSVG(W, H, fn, attrs='') {
-  const g = Array.from({length: H}, () => new Array(W).fill(null));
-  const s = (x, y, c) => { if (x >= 0 && x < W && y >= 0 && y < H) g[y][x] = c; };
-  fn(s, W, H);
-  let r = '';
-  for (let y = 0; y < H; y++)
-    for (let x = 0; x < W; x++)
-      if (g[y][x]) r += `<rect x="${x}" y="${y}" width="1" height="1" fill="${g[y][x]}"/>`;
-  return `<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges" style="display:block;width:100%;height:100%;image-rendering:pixelated" ${attrs}>${r}</svg>`;
-}
-
-function buildWindow(W, H) {
-  return pxSVG(W, H, (s) => {
-    const Fr='#7a5a30', Fd='#4a3010';
-    const Sk='#6ab0e0', Sl='#9acef5';
-    const Wc='#f8feff', Ws='#d0edf8';
-    const Gd='#2a5a10', Gm='#3a7820', Gl='#4a9230', Gh='#5aaa3a';
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
-      if (x < 2 || x >= W-2 || y < 2 || y >= H-2)
-        s(x, y, (x===0||y===0||x===W-1||y===H-1) ? Fd : Fr);
-      else s(x, y, Sk);
-    }
-    for (let y = 2; y < H-2; y++) for (let x = 2; x < W-2; x++)
-      if ((x + y*3) % 19 === 0) s(x, y, Sl);
-    const cloud = (cx, cy, rx, ry) => {
-      for (let dy = -ry; dy <= ry; dy++) for (let dx = -rx; dx <= rx; dx++) {
-        const f = (dx*dx)/(rx*rx) + (dy*dy)/(ry*ry);
-        if (f <= 1 && cy+dy >= 2 && cy+dy < Math.floor(H*0.55))
-          s(cx+dx, cy+dy, (dx*dx)/((rx-1)*(rx-1))+(dy*dy)/((ry-1)*(ry-1)) <= 1 ? Wc : Ws);
-      }
-    };
-    cloud(9, 8, 7, 4);
-    cloud(22, 6, 5, 3);
-    const gs = Math.floor(H * 0.65);
-    for (let y = gs; y < H-2; y++) for (let x = 2; x < W-2; x++) {
-      const hill = gs + Math.round(Math.sin((x-2)/(W-4) * Math.PI) * H * 0.07);
-      if (y >= hill) { const d = y - hill; s(x, y, d===0?Gh:d<=2?Gl:d<=5?Gm:Gd); }
-    }
-    const bx = Math.floor(W/2), by = Math.floor(H * 0.4);
-    for (let y = 2; y < H-2; y++) { s(bx, y, Fr); if (bx > 2) s(bx-1, y, Fd); }
-    for (let x = 2; x < W-2; x++) s(x, by, Fr);
-  });
-}
-
-function buildRug(W, H) {
-  return pxSVG(W, H, (s) => {
-    const B='#100808', R='#8b1a1a', C='#d4b896', c='#b89060', G='#c8921a';
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) s(x, y, R);
-    for (let x = 0; x < W; x++) {
-      s(x, 0, x%2===0?B:C);   s(x, 1, x%2===0?C:B);
-      s(x, H-1, x%2===0?B:C); s(x, H-2, x%2===0?C:B);
-    }
-    for (let y = 2; y < H-2; y++) {
-      s(0, y, y%2===0?B:C);   s(1, y, y%2===0?C:B);
-      s(W-1, y, y%2===0?B:C); s(W-2, y, y%2===0?C:B);
-    }
-    [[2,B],[3,C],[4,B],[5,c],[6,B]].forEach(([r,col]) => {
-      for (let x = r; x < W-r; x++) { s(x, r, col); s(x, H-1-r, col); }
-      for (let y = r+1; y < H-1-r; y++) { s(r, y, col); s(W-1-r, y, col); }
-    });
-    const cx = Math.floor(W/2), cy = Math.floor(H/2), mr = 7;
-    for (let dy = -mr; dy <= mr; dy++) for (let dx = -mr; dx <= mr; dx++) {
-      const d = Math.abs(dx) + Math.abs(dy);
-      if (d > mr) continue;
-      s(cx+dx, cy+dy, d===mr?B : d>=mr-2?C : d>=mr-4?B : d>=mr-5?c : d>=mr-6?B : G);
-    }
-    s(cx, cy, C);
-    [[9,8],[W-10,8],[9,H-9],[W-10,H-9]].forEach(([qx,qy]) => {
-      for (let d = 0; d <= 3; d++)
-        for (let dy = -d; dy <= d; dy++)
-          for (let dx = -(d-Math.abs(dy)); dx <= d-Math.abs(dy); dx++)
-            s(qx+dx, qy+dy, d===3?B : d===2?C : d===1?B : G);
-    });
-    [Math.floor(W*0.25), Math.floor(W*0.75)].forEach(ox => {
-      const sr = 4;
-      for (let dy = -sr; dy <= sr; dy++) for (let dx = -sr; dx <= sr; dx++) {
-        const d = Math.abs(dx) + Math.abs(dy);
-        if (d <= sr) s(ox+dx, cy+dy, d===sr?B : d>=sr-1?C : d>=sr-2?B : R);
-      }
-    });
-  }, 'preserveAspectRatio="none"');
-}
-
-function buildDesk(W, H) {
-  return pxSVG(W, H, (s) => {
-    const Wh='#c4834a', Wm='#8b5a2b', Wd='#6a3a12', Wk='#3a1a08';
-    for (let x = 0; x < W; x++) { s(x,0,Wh); s(x,1,Wm); s(x,2,Wd); if(x%5===2) s(x,1,Wd); }
-    for (let y = 3; y < H; y++) {
-      s(3,y,Wh); s(4,y,Wm); s(5,y,Wd);
-      s(W-6,y,Wh); s(W-5,y,Wm); s(W-4,y,Wd);
-    }
-    for (let x = 4; x < W-5; x++) { s(x,H-4,Wm); s(x,H-3,Wd); }
-    for (let dx = 0; dx <= 2; dx++) { s(2+dx,H-1,Wk); s(W-7+dx,H-1,Wk); }
-  });
-}
-
-function buildCabinet(W, H) {
-  return pxSVG(W, H, (s) => {
-    const Wh='#9a6830', Wm='#7a5220', Wd='#5a3810', Wk='#3a2408', Dk='#221408';
-    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) s(x, y, Wm);
-    for (let x = 0; x < W; x++) { s(x,0,Wh); s(x,1,Wm); s(x,2,Wd); }
-    for (let y = 0; y < H; y++) { s(0,y,Wh); s(W-1,y,Dk); s(W-2,y,Wk); }
-    const mid = Math.floor(W/2);
-    for (let x = 3; x < mid-1; x++) { s(x,4,Wk); s(x,H-3,Wk); }
-    for (let y = 5; y < H-3; y++) { s(3,y,Wk); s(mid-2,y,Wk); }
-    for (let x = mid+2; x < W-3; x++) { s(x,4,Wk); s(x,H-3,Wk); }
-    for (let y = 5; y < H-3; y++) { s(mid+2,y,Wk); s(W-3,y,Wk); }
-    for (let y = 0; y < H; y++) { s(mid,y,Dk); s(mid-1,y,Wk); }
-    s(Math.floor(mid*0.55), Math.floor(H*0.55), Wh);
-    s(W-Math.floor(mid*0.55)-1, Math.floor(H*0.55), Wh);
-    for (let x = 0; x < W; x++) { s(x,H-2,Wk); s(x,H-1,Dk); }
-  });
-}
-
-function buildShelf(W, H) {
-  return pxSVG(W, H, (s) => {
-    const Wh='#c4834a', Wm='#8b5a2b', Wd='#6a3a12', Wk='#3a1a08';
-    for (let x = 0; x < W; x++) { s(x,0,Wh); s(x,1,Wm); s(x,2,Wd); if(x%6===1) s(x,1,Wd); }
-    if (H > 3) {
-      for (let y = 3; y < H; y++) { s(3,y,Wm); s(4,y,Wd); s(W-5,y,Wm); s(W-4,y,Wd); }
-      for (let x = 3; x <= 8; x++) s(x, H-1, Wd);
-      for (let x = W-9; x <= W-4; x++) s(x, H-1, Wd);
-    }
-  });
-}
+/* ---------- featured list — edit order/labels here ---------- */
+const FEATURED = [
+  { type: "reel",     id: "editing-reel" },
+  { type: "project",  id: "getting-out-of-bed",       kicker: "Short Film" },
+  { type: "external", title: "YouTube Channel",       href: "https://www.youtube.com/channel/UCMPYbrIGNEGpAnMACNUUCYg" },
+  { type: "project",  id: "little-trees",             kicker: "Documentary" },
+  { type: "project",  id: "will-barter-for-doula",    kicker: "writing" },
+  { type: "project",  id: "haunt",                    kicker: "social media work" },
+  { type: "project",  id: "ayurprana" },
+  { type: "project",  id: "alien-lady-scene",         kicker: "indie pilot editor" },
+  { type: "project",  id: "memories-cameron-stenger", kicker: "Music Video" },
+  { type: "project",  id: "resonate-chop",            kicker: "audiovisual installation piece" }
+];
 
 /* ---------- landing ---------- */
 const landing = document.getElementById("landing");
 
-const room = document.createElement("div");
-room.className = "room";
-room.innerHTML = '<div class="room-window"></div><div class="room-rug"></div><div class="furn-desk"></div><div class="furn-cabinet"></div><div class="furn-shelf"></div>';
-room.querySelector('.room-window').innerHTML = buildWindow(30, 44);
-room.querySelector('.room-rug').innerHTML    = buildRug(64, 28);
-room.querySelector('.furn-desk').innerHTML   = buildDesk(30, 14);
-room.querySelector('.furn-cabinet').innerHTML = buildCabinet(24, 18);
-room.querySelector('.furn-shelf').innerHTML  = buildShelf(40, 8);
-landing.appendChild(room);
+landing.innerHTML = `
+  <ul class="featured-list" id="featuredList"></ul>
+`;
 
-const avatar = document.createElement("figure");
-avatar.className = "avatar";
-avatar.setAttribute("role", "button");
-avatar.setAttribute("tabindex", "0");
-avatar.setAttribute("aria-label", "About");
-avatar.innerHTML = `<span class="icon-holder">${iconSVG(ICONS.avatar)}</span><div class="steam"></div>`;
-avatar.addEventListener("click", openAbout);
-avatar.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") openAbout(); });
-landing.appendChild(avatar);
+const featuredList = document.getElementById("featuredList");
 
-const MUSIC_NOTES_HTML = `
-  <span class="music-notes">
-    <svg class="note n1" viewBox="0 0 7 9"><rect x="3" y="0" width="1" height="6"/><rect x="4" y="0" width="2" height="1"/><rect x="5" y="1" width="1" height="2"/><rect x="1" y="6" width="3" height="2"/></svg>
-    <svg class="note n2" viewBox="0 0 10 9"><rect x="2" y="0" width="7" height="1"/><rect x="2" y="0" width="1" height="7"/><rect x="8" y="0" width="1" height="7"/><rect x="0" y="6" width="3" height="2"/><rect x="6" y="6" width="3" height="2"/></svg>
-    <svg class="note n3" viewBox="0 0 7 9"><rect x="3" y="0" width="1" height="6"/><rect x="4" y="0" width="2" height="1"/><rect x="5" y="1" width="1" height="2"/><rect x="1" y="6" width="3" height="2"/></svg>
-  </span>`;
+FEATURED.forEach(item => {
+  const li = document.createElement("li");
 
-CATEGORIES.forEach(cat => {
-  const btn = document.createElement("button");
-  btn.className = "scene-obj";
-  btn.dataset.cat = cat.id;
-  const notesHTML = cat.id === "music" ? MUSIC_NOTES_HTML : "";
-  btn.innerHTML = `<span class="icon-holder">${iconSVG(ICONS[cat.id])}${notesHTML}</span><span class="label">${cat.label}</span>`;
-  btn.addEventListener("click", () => openCategory(cat.id));
-  landing.appendChild(btn);
+  if (item.type === "reel") {
+    const p = PROJECTS.find(x => x.id === item.id);
+    li.className = "featured-item featured-reel";
+    li.innerHTML = `
+      <button class="featured-reel-trigger" type="button">
+        <video src="${p.video}" autoplay muted loop playsinline preload="auto"></video>
+        <span class="featured-title">${p.title}</span>
+      </button>`;
+    li.querySelector("button").addEventListener("click", () => openProject(item.id));
+
+  } else if (item.type === "project") {
+    const p = PROJECTS.find(x => x.id === item.id);
+    li.className = "featured-item";
+    li.innerHTML = `
+      <button class="featured-title" type="button">${p.title}</button>
+      ${item.kicker ? `<span class="kicker">${item.kicker}</span>` : ""}`;
+    li.querySelector("button").addEventListener("click", () => openProject(item.id));
+
+  } else if (item.type === "external") {
+    li.className = "featured-item";
+    li.innerHTML = `
+      <a class="featured-title" href="${item.href}" target="_blank" rel="noopener">${item.title}</a>
+      ${item.kicker ? `<span class="kicker">${item.kicker}</span>` : ""}`;
+
+  } else if (item.type === "soon") {
+    li.className = "featured-item featured-soon";
+    li.innerHTML = `
+      <span class="featured-title">${item.title}</span>
+      ${item.kicker ? `<span class="kicker">${item.kicker}</span>` : ""}
+      <span class="soon-tag">coming soon</span>`;
+  }
+
+  featuredList.appendChild(li);
 });
 
 /* ---------- work view ---------- */
@@ -1253,16 +767,18 @@ const list = document.getElementById("projectList");
 const detail = document.getElementById("detail");
 const catLabel = document.getElementById("catLabel");
 
-function openCategory(catId, push = true) {
-  const cat = CATEGORIES.find(c => c.id === catId);
-  const projects = PROJECTS.filter(p => p.cat === catId);
+const FEATURED_PROJECT_IDS = FEATURED
+  .filter(f => f.type === "reel" || f.type === "project")
+  .map(f => f.id);
 
-  catLabel.textContent = "~/" + cat.label.replace(".", "");
+function openProject(id, push = true) {
+  catLabel.textContent = "~/featured";
   list.innerHTML = "";
-  projects.forEach(p => {
+  FEATURED_PROJECT_IDS.forEach(pid => {
+    const p = PROJECTS.find(x => x.id === pid);
     const li = document.createElement("li");
     const btn = document.createElement("button");
-    btn.textContent = p.title;
+    btn.innerHTML = `<span class="idx-title">${p.title}</span>${p.meta ? `<span class="idx-meta">${p.meta}</span>` : ""}`;
     btn.dataset.id = p.id;
     btn.addEventListener("click", () => load(p.id));
     li.appendChild(btn);
@@ -1272,9 +788,9 @@ function openCategory(catId, push = true) {
   landing.style.display = "none";
   workSection.style.display = "block";
   applyTheme(THEMES[0]);
-  if (projects.length) load(projects[0].id);
+  load(id);
   window.scrollTo({ top: 0 });
-  if (push) setPath("/" + CAT_SLUGS[catId] + "/");
+  if (push) setPath("/" + id + "/");
 }
 
 const aboutSection = document.getElementById("about");
@@ -1283,7 +799,7 @@ function goHome(push = true) {
   workSection.style.display = "none";
   aboutSection.style.display = "none";
   landing.style.display = "";
-  applyTheme(THEMES[9]);
+  applyTheme(THEMES[0]);
   window.scrollTo({ top: 0 });
   if (push) setPath("/");
 }
@@ -1303,36 +819,6 @@ const homeLink = document.getElementById("homeLink");
 homeLink.addEventListener("click", goHome);
 homeLink.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") goHome(); });
 
-/* ---------- welcome chatbox — pixel speech bubble ---------- */
-const welcomeBox = document.createElement("div");
-welcomeBox.id = "welcome-box";
-welcomeBox.setAttribute("role", "dialog");
-welcomeBox.setAttribute("aria-label", "Welcome");
-// Polygon: 220×96 viewBox. Stepped corners (8px). Tail centered bottom, 32px wide → 16px tip.
-// Body: y=0–80. Tail: y=80–96.
-// Tail at bottom-right, right-leaning (tip shifts rightward toward avatar).
-// Base x=180–204 at y=80; both walls step right as they descend; tip x=196–212 at y=96.
-welcomeBox.innerHTML = `
-  <svg class="bubble-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 96">
-    <polygon
-      points="8,0 212,0 220,8 220,72 212,80 204,80 204,88 212,96 196,96 188,88 180,80 8,80 0,72 0,8"
-      style="fill:#fff;stroke:#000;stroke-width:4;stroke-linejoin:miter"
-    />
-  </svg>
-  <div class="bubble-content">
-    <p>Welcome to my portfolio, feel free to take a look around!</p>
-  </div>
-`;
-landing.appendChild(welcomeBox);
-
-function dismissWelcome() {
-  welcomeBox.classList.add("hidden");
-}
-welcomeBox.addEventListener("click", dismissWelcome);
-document.addEventListener("keydown", () => {
-  if (!welcomeBox.classList.contains("hidden")) dismissWelcome();
-}, { once: true });
-
 function load(id) {
   const p = PROJECTS.find(x => x.id === id);
   if (!p) return;
@@ -1343,19 +829,41 @@ function load(id) {
   detail.classList.add("loading");
 
   setTimeout(() => {
-    const videoHTML = p.youtube ? `
+    const videoHTML = (p.youtube ? `
       <div class="video-player">
-        <iframe src="https://www.youtube-nocookie.com/embed/${p.youtube}?autoplay=1&mute=1&rel=0&playsinline=1" title="${p.title}" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
+        <iframe src="https://www.youtube-nocookie.com/embed/${p.youtube}?autoplay=1&mute=1&rel=0&playsinline=1${p.youtubeStart ? `&start=${p.youtubeStart}` : ""}" title="${p.title}" allow="autoplay; encrypted-media; fullscreen; picture-in-picture" allowfullscreen></iframe>
       </div>` : p.video ? `
-      <div class="video-player">
+      <div class="video-player${p.portrait ? " portrait" : ""}">
         <video src="${p.video}" controls preload="auto" autoplay loop muted playsinline></video>
-      </div>` : "";
+      </div>` : "") + (p.extraVideo ? `
+      <div class="video-pair">
+        <div class="video-pair-item">
+          <div class="video-player${p.extraVideo.portrait ? " portrait" : ""}">
+            <video src="${p.extraVideo.src}" controls preload="auto" autoplay loop muted playsinline></video>
+          </div>
+          ${p.extraVideo.caption ? `<div class="embed-caption">${p.extraVideo.caption}</div>` : ""}
+        </div>
+        ${p.flyer ? `
+        <div class="video-pair-item">
+          <img class="flyer-image" src="${p.flyer.src}" alt="${p.flyer.alt}">
+          ${p.flyer.caption ? `<div class="embed-caption">${p.flyer.caption}</div>` : ""}
+        </div>` : ""}
+      </div>` : "");
     const playVideo = () => {
       const vid = detail.querySelector("video");
       if (vid) vid.play().catch(() => {});
     };
 
-    if (p.cat === "photo") {
+    if (p.article) {
+      detail.innerHTML = `
+        <h1>${p.title}</h1>
+        <div class="meta">${p.meta}</div>
+        ${p.dek ? `<p class="dek">${p.dek}</p>` : ""}
+        <div class="article-body">${p.article}</div>
+        ${p.externalUrl ? `<a class="ext-link" href="${p.externalUrl}" target="_blank" rel="noopener">Originally published on Substack &nearr;</a>` : ""}
+      `;
+      detail.classList.remove("loading");
+    } else if (p.cat === "photo") {
       const photos = p.cells.filter(c => c.src);
       // build pages: landscape photos get their own page, portraits pair up
       const pages = [];
@@ -1409,6 +917,8 @@ function load(id) {
       detail.innerHTML = `
         <h1>${p.title}</h1>
         <div class="meta">${p.meta}</div>
+        ${p.blurb ? `<p class="blurb">${p.blurb}</p>` : ""}
+        ${p.photo ? `<figure class="project-photo"><img src="${p.photo.src}" alt="${p.photo.alt}">${p.photo.caption ? `<figcaption class="embed-caption">${p.photo.caption}</figcaption>` : ""}</figure>` : ""}
         <div class="embed-grid">${embedsHTML}</div>
       `;
       detail.classList.remove("loading");
@@ -1442,7 +952,7 @@ function load(id) {
         <div class="substack-embed">
           <div class="substack-post-embed">
             <p lang="en">${p.substack.title} by ${p.substack.author}</p>
-            <p>${p.substack.subtitle}</p>
+            ${p.substack.subtitle ? `<p>${p.substack.subtitle}</p>` : ""}
             <a data-post-link href="${p.substack.url}">Read on Substack</a>
           </div>
         </div>
@@ -1468,7 +978,9 @@ function load(id) {
       detail.innerHTML = `
         <h1>${p.title}</h1>
         <div class="meta">${p.meta}</div>
+        ${p.blurb ? `<p class="blurb">${p.blurb}</p>` : ""}
         ${videoHTML}
+        ${p.photo ? `<figure class="project-photo"><img src="${p.photo.src}" alt="${p.photo.alt}">${p.photo.caption ? `<figcaption class="embed-caption">${p.photo.caption}</figcaption>` : ""}</figure>` : ""}
         ${bodyHTML}
       `;
       detail.classList.remove("loading");
@@ -1491,73 +1003,9 @@ const THEMES = [
   { name: "amber",      bg: "#1c1408", text: "#ab8a55", strong: "#ecc98c", faint: "#5c4b30", cell: "#281e10", hue: 40,  dark: true }
 ];
 
-let themeIndex = 9;
+let themeIndex = 0;
 
-/* --- color math for tinting icons to the active scheme --- */
-function hexToHsl(hex) {
-  const n = parseInt(hex.slice(1), 16);
-  let r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255;
-  const max = Math.max(r, g, b), min = Math.min(r, g, b);
-  let h = 0, s = 0, l = (max + min) / 2;
-  if (max !== min) {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0));
-    else if (max === g) h = (b - r) / d + 2;
-    else h = (r - g) / d + 4;
-    h *= 60;
-  }
-  return [h, s * 100, l * 100];
-}
-
-function hslToHex(h, s, l) {
-  s /= 100; l /= 100;
-  const k = n => (n + h / 30) % 12;
-  const a = s * Math.min(l, 1 - l);
-  const f = n => l - a * Math.max(-1, Math.min(k(n) - 3, Math.min(9 - k(n), 1)));
-  const to = x => Math.round(x * 255).toString(16).padStart(2, "0");
-  return "#" + to(f(0)) + to(f(8)) + to(f(4));
-}
-
-function tint(hex, theme) {
-  if (theme.hue === null) return hex;              // paper keeps original icon colors
-  let [h, s, l] = hexToHsl(hex);
-  s = Math.min(Math.max(s, 30), 62);               // pull greys into the hue, calm loud colors
-  if (theme.dark) l = 32 + l * 0.58;               // lift dark pixels so icons read on dark bg
-  return hslToHex(theme.hue, s, l);
-}
-
-function tintedPalette(icon, theme) {
-  const out = {};
-  for (const key in icon.palette) out[key] = tint(icon.palette[key], theme);
-  return out;
-}
-
-function avatarJump() {
-  const svg = document.querySelector(".avatar svg");
-  if (!svg) return;
-  svg.classList.remove("jump");
-  void svg.offsetWidth; /* restart animation */
-  svg.classList.add("jump");
-  svg.addEventListener("animationend", () => svg.classList.remove("jump"), { once: true });
-}
-
-function renderIcons(theme, pop) {
-  if (pop) avatarJump();
-  document.querySelectorAll(".scene-obj").forEach((btn, i) => {
-    const catId = btn.dataset.cat;
-    const holder = btn.querySelector(".icon-holder");
-    holder.innerHTML = iconSVG(ICONS[catId]) + (catId === "music" ? MUSIC_NOTES_HTML : "");
-    if (pop) {
-      const svg = holder.querySelector("svg");
-      svg.style.animationDelay = (i * 0.06) + "s";
-      svg.classList.add("pop");
-      svg.addEventListener("animationend", () => svg.classList.remove("pop"), { once: true });
-    }
-  });
-}
-
-function applyTheme(t, pop) {
+function applyTheme(t) {
   const r = document.documentElement.style;
   r.setProperty("--bg", t.bg);
   r.setProperty("--text", t.text);
@@ -1565,16 +1013,11 @@ function applyTheme(t, pop) {
   r.setProperty("--text-faint", t.faint);
   r.setProperty("--cell", t.cell);
   document.getElementById("themeName").textContent = "· scheme: " + t.name;
-  renderIcons(t, pop);
 }
 
-applyTheme(THEMES[9]);
+applyTheme(THEMES[0]);
 
 /* ---------- URL routing ---------- */
-const CAT_SLUGS = { writing: "writing", video: "video", photo: "gallery", music: "music", misc: "misc" };
-const SLUG_TO_CAT = {};
-for (const id in CAT_SLUGS) SLUG_TO_CAT[CAT_SLUGS[id]] = id;
-
 function setPath(path) {
   if (location.protocol === "file:") return;
   history.pushState(null, "", path);
@@ -1584,14 +1027,14 @@ function routeTo(path) {
   const seg = path.replace(/^\/+|\/+$/g, "");
   if (!seg) goHome(false);
   else if (seg === "about") openAbout(false);
-  else if (SLUG_TO_CAT[seg]) openCategory(SLUG_TO_CAT[seg], false);
+  else if (PROJECTS.find(p => p.id === seg)) openProject(seg, false);
   else goHome(false);
 }
 
 window.addEventListener("popstate", () => routeTo(location.pathname));
 
 const entrySlug = new URLSearchParams(location.search).get("p");
-if (entrySlug && (SLUG_TO_CAT[entrySlug] || entrySlug === "about")) {
+if (entrySlug && (PROJECTS.find(p => p.id === entrySlug) || entrySlug === "about")) {
   history.replaceState(null, "", "/" + entrySlug + "/");
   routeTo("/" + entrySlug + "/");
 } else if (location.pathname !== "/" && location.protocol !== "file:") {
