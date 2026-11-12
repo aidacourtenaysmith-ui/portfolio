@@ -369,6 +369,111 @@ a.featured-title { display: inline-block; }
 .photo-nav .photo-count { font-size: 11px; color: var(--text-faint); }
 .photo-tag { font-size: 10px; color: var(--text-faint); margin-top: 8px; }
 
+/* ---------- case study ---------- */
+.concept-label {
+  display: inline-block;
+  border: 1px solid var(--text-faint);
+  color: var(--text-strong);
+  font-size: 11px;
+  font-style: italic;
+  letter-spacing: 0.02em;
+  padding: 6px 10px;
+  margin-bottom: 36px;
+}
+.case-body h2 {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-strong);
+  margin: 44px 0 14px;
+}
+.case-body h2:first-child { margin-top: 0; }
+.case-body h3 {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--text-faint);
+  letter-spacing: 0.02em;
+  margin: 24px 0 10px;
+}
+.case-body ul { list-style: none; margin: 0 0 20px; }
+.case-body ul li { padding-left: 18px; position: relative; margin-bottom: 8px; }
+.case-body ul li::before { content: "–"; position: absolute; left: 0; color: var(--text-faint); }
+.case-body ol li::marker { color: var(--text-faint); }
+
+.tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; list-style: none; }
+.case-body .tag-list li { padding: 2px 10px; margin: 0; background: var(--cell); font-size: 11px; line-height: 1.9; color: var(--text-strong); }
+.case-body .tag-list li::before { content: none; }
+
+/* access-system illustration */
+.access-demo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 8px 0 12px; max-width: 640px; }
+.access-tile { min-width: 0; }
+.access-tile .media {
+  aspect-ratio: 16 / 10;
+  background: var(--cell);
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 10px;
+  font-size: 11px;
+  color: var(--text);
+}
+.access-dot {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+.access-free  { background: #6e9a68; }
+.access-trial { background: #d19a3a; }
+.access-paid  { background: #a3a3a3; }
+.access-tile .tag { font-size: 10px; color: var(--text-faint); margin-top: 6px; display: flex; align-items: center; gap: 6px; }
+.access-tile .tag .access-dot { position: static; width: 6px; height: 6px; }
+
+/* placeholder blocks for visuals still to come */
+.placeholder-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin: 8px 0 28px; max-width: 640px; }
+.placeholder {
+  aspect-ratio: 9 / 16;
+  border: 1px dashed var(--text-faint);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 12px;
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+}
+.placeholder-grid.wide { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.placeholder.wide { aspect-ratio: 16 / 10; }
+
+/* embedded clickable prototype: the centerpiece of a case study */
+.prototype { margin: 0 0 48px; max-width: 390px; }
+.prototype iframe {
+  display: block;
+  width: 390px;
+  max-width: 100%;
+  height: 844px;
+  border: 0;
+  border-radius: 48px;
+  background: transparent;
+  color-scheme: normal;
+}
+.prototype .embed-caption a { color: inherit; }
+
+.case-back {
+  margin-top: 40px;
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: inherit;
+  font-size: 12px;
+  color: var(--text-faint);
+  cursor: pointer;
+}
+.case-back:hover { color: var(--text-strong); }
+
 /* ---------- about page ---------- */
 #about { display: none; }
 
@@ -603,6 +708,78 @@ const PROJECTS = [
     cells: []
   },
 
+  /* ---- CASE STUDY ---- */
+  {
+    id: "lineage", cat: "case study",
+    title: "Lineage",
+    meta: "UX design and rebrand",
+    dek: "A UX redesign and rebrand of AyurPrana+ into a multi-tradition wellness streaming app",
+    concept: "Concept project. Pitched to leadership, not implemented.",
+    docTitle: "Lineage: UX design and rebrand case study · Aida Courtenay-Smith",
+    docDescription: "UX design and rebrand for AyurPrana+, reimagined as Lineage, a multi-tradition wellness streaming platform.",
+    cells: [],
+    prototype: {
+      src: "lineage/prototype/index.html",
+      caption: "Clickable prototype of the onboarding. A few quick questions match you with a guide and your first film."
+    },
+    caseStudy: `
+      <h2>The problem</h2>
+      <p>AyurPrana+ streamed Ayurvedic practices, documentaries, and teachings. The name boxed it into one niche, which held back growth and sign-ups for its yearlong Prana Life membership.</p>
+
+      <h2>The idea</h2>
+      <p>Rename it Lineage and open it to teachers from many traditions, with Ayurveda and Dr. Vasant Lad&#8217;s teachings still at the core. Every teacher and every student comes from a lineage.</p>
+
+      <h2>Strategy</h2>
+      <p>Three steps, from curious to committed:</p>
+      <ol>
+        <li><strong>Membership:</strong> low-cost monthly access, with a free trial and a free tier.</li>
+        <li><strong>Courses:</strong> deeper learning for people who want more.</li>
+        <li><strong>Prana Life:</strong> a yearlong membership for the most dedicated.</li>
+      </ol>
+      <h3>Who it&#8217;s for</h3>
+      <ul class="tag-list">
+        <li>Established Practitioner</li>
+        <li>Burnout Seeker</li>
+        <li>Conscious Media Consumer</li>
+        <li>Ayurveda Adjacent</li>
+        <li>Tradition Holder</li>
+      </ul>
+      <h3>What&#8217;s on it</h3>
+      <ul class="tag-list">
+        <li>Documentaries &amp; stories</li>
+        <li>Podcasts</li>
+        <li>Practices with teachers</li>
+        <li>Courses</li>
+        <li>Prana Life</li>
+      </ul>
+
+      <h2>Experience design</h2>
+      <p>The old app hid free content in a &#8220;Free Videos&#8221; section, so free users felt like second-class visitors. In Lineage, <strong>everyone sees everything, and access is checked only when you press play.</strong></p>
+      <ul>
+        <li>Green, amber, and grey dots mark free, trial, and paid titles.</li>
+        <li>The paywall became the <strong>Threshold</strong>: an invitation to go deeper, not a wall.</li>
+      </ul>
+
+      <h2>Deliverables</h2>
+      <ul>
+        <li>Brand guide and UX copy system</li>
+        <li>Rebrand and UX audit of every feature, prioritized P1 to P3</li>
+        <li>Three-phase launch plan</li>
+        <li>Clickable prototypes, including the onboarding above</li>
+        <li>Pitch deck for leadership</li>
+      </ul>
+      <!-- PLACEHOLDER: replace with brand visuals / audit excerpts once assets are provided -->
+      <div class="placeholder-grid wide">
+        <div class="placeholder wide">[ placeholder ]<br>brand guide visual</div>
+        <div class="placeholder wide">[ placeholder ]<br>rebrand audit excerpt</div>
+      </div>
+
+      <h2>Outcome</h2>
+      <p>I pitched it to leadership. The company didn&#8217;t have the systems to make a change this big, so it wasn&#8217;t built, and I left soon after.</p>
+      <p>What I took from it: a brand strategy only works if the organization can deliver it. Now I check that before I recommend a direction.</p>
+    `
+  },
+
   /* ---- PHOTO ---- */
   {
     id: "gallery", cat: "photo",
@@ -644,15 +821,6 @@ const PROJECTS = [
   },
 
   /* ---- WRITING ---- */
-  {
-    id: "will-barter-for-doula", cat: "writing",
-    title: "Will Barter for Doula",
-    meta: "essay · published September 6, 2026",
-    dek: "Does this make me a real artist?",
-    externalUrl: "https://aidacourtenaysmith.substack.com/p/will-barter-for-doula",
-    cells: [],
-    article: `<p>My mom recently unearthed a beautiful time capsule of her and my dad&#8217;s accounts of becoming parents. Being the creative, Bay Area parents they were&#8212;and remain to be to this day (just not in the Bay Area)&#8212;they took it upon themselves to write letters to me, dating all the way back in the year 2002; (the year before I was born) a firsthand, journal entry account of what it&#8217;s like to find out you have your first baby on the way. </p><p>I found this letter from my Dad: </p><figure class="article-figure"><img src="writing/wbfd-letter-1.jpg" alt="Handwritten letter, part 1 of 2"></figure><figure class="article-figure"><img src="writing/wbfd-letter-2.jpg" alt="Handwritten letter, part 2 of 2"></figure><p>And not only was my labor bartered for via massage and art, but it&#8217;s starting to feel like my whole life has been gifted to me in exchange for my creativity.  </p><p>Last week, I got a text from my mom saying </p><p>&#8220;you have no idea how much money is in your college fund!&#8221; </p><p>To which I thought, &#8220;you&#8217;re right, I do not.&#8221; </p><p>Last year, it had 35k, this year it has 57. That&#8217;s at least one indie film budget. </p><p>An important piece of context, is that I didn&#8217;t go to college right out of high school, I actually never went to college. I never had a desire to spend <em>anyone&#8217;s</em> money to fart around one specific town for four years. To me, it sounded like the opposite of how I wanted to kickoff my &#8216;big adult life&#8217; and I had spent enough time farting around Asheville for 11 years. So, I decided to plan a year. A year of adventure and travel that didn&#8217;t cost too much (so I didn&#8217;t have to get a job) a year of real freedom. </p><p>My first stop on the &#8216;freedom world tour&#8217; was my birthplace: Oakland, CA. An hour outside of foggy, romantic San Francisco. Not quite as romantic, slightly more gangster, slightly more affordable but in the end, not affordable enough with two kids and little support. I stayed with Mark and Cecilia Storr, surrogate grandparents of sorts. Two kooky, well-read liberal bayarealites in their 60s who were next-door neighbors to my parents in their first Berkeley apartment. Where I terrorized the neighbors with my newborn mania. Anyhow, Mark and Cecila generously helped my parents raise me. They drove me to school, babysat on date nights, and I even had my own room in their house. The same people who started college funds for me and my sister and helped my parents out of bankruptcy in 2008. Out of the kindness of their hearts, and their love for my parents. They may not have always been rich monetarily, but my parents have always been blessed with the creativity to figure it out. Each in their own way. Which has been one of the coolest thing to look out for in the scrapbook I was recently gifted. While my mom focuses more on recounting her emotions; positive and negative, consistently veering back to her belief that &#8220;although bringing a child into the world is scary, anything with this much love will always work out.&#8221;, my dad writes as if he&#8217;s deep in awe and wonder about everything (including the <em>finances</em> of having a child) Looking back, everything did work out. Even after a divorce, coparenting two kids and at times difficult partners, they have always remained friends. And as of two weeks ago, both me and now my sister have moved out, started our lives, and done so successfully and gracefully at that. My sister went to her dream school, out of state tuition at that&#8212;all on scholarships and the college fund from the Storrs. Well done Mom and Pops, somehow you did it. Even though at times, they probably both felt as if they were flying by the seat of their pants, they helped to make my sister&#8217;s dream come true, and I know they&#8217;ve done the same for me and continue to do so. It feels as if  my parents didn&#8217;t place such a heavy value on material wealth, they could see how wealthy they&#8217;ve always been. Both such wise souls full of spiritual knowledge, creativity, and a different way of seeing things. Imagination. </p><p>Growing up, there were times when I resented my parents for not having extra cash. Being the charismatic, charming lady I am, I was pretty popular in school, but I struggled with feeling like I&#8217;d never belong with the kids whose parents always bought them the &#8216;new cool thing.&#8217; Looking back, I&#8217;m grateful to my parents for questioning my intentions around consumerism, and whether I liked things because everyone else did, or because I actually had a connection with it. It&#8217;s lessons like these that have shaped me into such a snob artist type I guess&#8212;lol. Now, when I hang out with my parents as an adult, we&#8217;re always eating <em>quality</em> meals, drinking <em>quality</em> coffee, talking about our opinions about the <em>quality</em> of things. </p><p><strong>They gave me taste, and for that, I&#8217;ll always be grateful.</strong> </p><p>That being said, when you like nice things, you want your bank account to support you having those nice things. Although this fact brought stress to my parents and their lives plenty I&#8217;m sure, I also think they have taught me how to create the life that you want, no matter what your financial situation is. That,  just by training your nervous system to <em>receive</em>; money, favors, miracles, the perfect piece of furniture on the side of the road etc. everything that you are meant to have finds you. Now this lesson wasn&#8217;t taught explicitly and they probably have no idea that&#8217;s what they were doing, but sometimes you learn by watching. This one I learning by watching. Watching them, watching myself, watching them again and again, feeling things, making mistakes, correcting them, the way I usually learn things. Today, I feel as if I have everything I ever need and more, monetarily and spiritually too. Lots to learn, so much beauty to take in, and so many more experiences to make. </p><p>The curious thing about my Mom and Dad&#8217;s relationship to money is that, for a long time they existed on what I would call &#8216;opposite ends of the spectrum&#8217; from <em>loose</em> to <em>tight</em>. But as time has progressed, things seem to be balancing out. And here I am, with choices to make about how I want to be, because the different ways to be were so beautifully acted out in front of my eyes my entire life. </p><p>What I live by (as of today)</p><ol><li><p>There is a figurative second economy that rules the exchange of what we create. And the more we support the creation of something, the more it gets created by everyone who then, contributes their expression of that in the world, sculpting our worlds thoughts, actions, and overall landscape. We can call it the &#8216;economy of inspiration.&#8217; </p></li><li><p>You never know where the next door will open, but with a strong enough imagination, and a body that can hold a lot of sensation, you can pretty much cruise your way to your dream life if you can <em>see</em> a pathway and <em>stay</em> on it. </p></li><li><p>Generosity is key. The second you stop participating in the give and take of the universe, the second you get counted out of the pot. In other words, you have to &#8220;pay to play.&#8221; The universe doesn&#8217;t like freeloaders with nothing to contribute. Even if it&#8217;s donating your time to another person, to listen to their story for a minute, you don&#8217;t necessarily need to spend any real money.  </p></li></ol><p>So just like my parents did for me so long ago, I will continue write to them. A barter of sorts. Whether they read it or not, doesn&#8217;t matter (although they are my BIGGEST fans) but after seeing how many clues about my life I could unearth from this one artifact, you best believe I&#8217;m gonna keep on writin&#8217;      </p><p>- Aida</p>`
-  },
   {
     id: "follow-through", cat: "writing",
     title: "Follow Through",
@@ -712,16 +880,16 @@ const PROJECTS = [
 /* ---------- featured list — edit order/labels here ---------- */
 const FEATURED = [
   { type: "reel",     id: "editing-reel" },
+  { type: "project",  id: "resonate-chop",            kicker: "audiovisual installation piece" },
   { type: "project",  id: "getting-out-of-bed",       kicker: "Short Film" },
   { type: "external", title: "YouTube Channel",       href: "https://www.youtube.com/channel/UCMPYbrIGNEGpAnMACNUUCYg" },
   { type: "project",  id: "little-trees",             kicker: "Documentary" },
-  { type: "project",  id: "will-barter-for-doula",    kicker: "writing" },
   { type: "project",  id: "haunt",                    kicker: "social media work" },
   { type: "project",  id: "joy-camp",                 kicker: "event videographer" },
   { type: "project",  id: "ayurprana" },
+  { type: "project",  id: "lineage",                  kicker: "UX design and rebrand" },
   { type: "project",  id: "alien-lady-scene",         kicker: "indie pilot editor" },
-  { type: "project",  id: "memories-cameron-stenger", kicker: "Music Video" },
-  { type: "project",  id: "resonate-chop",            kicker: "audiovisual installation piece" }
+  { type: "project",  id: "memories-cameron-stenger", kicker: "Music Video" }
 ];
 
 /* ---------- landing ---------- */
@@ -805,7 +973,16 @@ function openProject(id, push = true) {
 
 const aboutSection = document.getElementById("about");
 
+const DEFAULT_TITLE = document.title;
+const metaDesc = document.querySelector('meta[name="description"]');
+const DEFAULT_DESC = metaDesc.content;
+function setDocMeta(title, desc) {
+  document.title = title || DEFAULT_TITLE;
+  metaDesc.content = desc || DEFAULT_DESC;
+}
+
 function goHome(push = true) {
+  setDocMeta();
   workSection.style.display = "none";
   aboutSection.style.display = "none";
   landing.style.display = "";
@@ -815,6 +992,7 @@ function goHome(push = true) {
 }
 
 function openAbout(push = true) {
+  setDocMeta();
   landing.style.display = "none";
   workSection.style.display = "none";
   aboutSection.style.display = "block";
@@ -834,6 +1012,8 @@ document.getElementById("aboutNavLink").addEventListener("click", e => { e.preve
 function load(id) {
   const p = PROJECTS.find(x => x.id === id);
   if (!p) return;
+
+  setDocMeta(p.docTitle, p.docDescription);
 
   document.querySelectorAll(".index button[data-id]").forEach(b =>
     b.classList.toggle("active", b.dataset.id === id));
@@ -866,7 +1046,22 @@ function load(id) {
       if (vid) vid.play().catch(() => {});
     };
 
-    if (p.article) {
+    if (p.caseStudy) {
+      detail.innerHTML = `
+        <h1>${p.title}</h1>
+        <p class="dek">${p.dek}</p>
+        <div class="meta">${p.meta}</div>
+        <p class="concept-label">${p.concept}</p>
+        ${p.prototype ? `<figure class="prototype">
+          <iframe src="${p.prototype.src}" title="${p.title} clickable prototype" loading="lazy"></iframe>
+          <figcaption class="embed-caption">${p.prototype.caption} <a href="${p.prototype.src}" target="_blank" rel="noopener">Open full screen</a></figcaption>
+        </figure>` : ""}
+        <div class="article-body case-body">${p.caseStudy}</div>
+        <button class="case-back" type="button">&larr; back to all work</button>
+      `;
+      detail.querySelector(".case-back").addEventListener("click", () => goHome());
+      detail.classList.remove("loading");
+    } else if (p.article) {
       detail.innerHTML = `
         <h1>${p.title}</h1>
         <div class="meta">${p.meta}</div>
