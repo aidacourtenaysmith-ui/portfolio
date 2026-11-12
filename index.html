@@ -461,6 +461,48 @@ a.featured-title { display: inline-block; }
   color-scheme: normal;
 }
 .prototype .embed-caption a { color: inherit; }
+.prototype-frame { position: relative; width: 390px; max-width: 100%; }
+.try-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--text-strong);
+  margin: 0 0 16px;
+}
+.try-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #d19a3a;
+  box-shadow: 0 0 0 0 rgba(209, 154, 58, 0.6);
+  animation: try-pulse 1.8s ease-out infinite;
+}
+.try-chip {
+  position: absolute;
+  left: 50%;
+  top: 72px;
+  transform: translateX(-50%);
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: #d19a3a;
+  color: #1a1206;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  pointer-events: none;
+  box-shadow: 0 0 0 0 rgba(209, 154, 58, 0.6);
+  animation: try-pulse 1.8s ease-out infinite;
+  transition: opacity 0.3s;
+}
+.try-chip.gone { opacity: 0; animation: none; }
+@keyframes try-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(209, 154, 58, 0.55); }
+  100% { box-shadow: 0 0 0 14px rgba(209, 154, 58, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .try-dot, .try-chip { animation: none; }
+}
 
 .case-back {
   margin-top: 40px;
@@ -720,64 +762,9 @@ const PROJECTS = [
     cells: [],
     prototype: {
       src: "lineage/prototype/index.html",
-      caption: "Clickable prototype of the onboarding. A few quick questions match you with a guide and your first film."
+      intro: "Interactive prototype. Tap through the app below.",
+      caption: "Start with \u201cNew to Lineage? Begin here.\u201d A few quick questions match you with a guide and your first film."
     },
-    caseStudy: `
-      <h2>The problem</h2>
-      <p>AyurPrana+ streamed Ayurvedic practices, documentaries, and teachings. The name boxed it into one niche, which held back growth and sign-ups for its yearlong Prana Life membership.</p>
-
-      <h2>The idea</h2>
-      <p>Rename it Lineage and open it to teachers from many traditions, with Ayurveda and Dr. Vasant Lad&#8217;s teachings still at the core. Every teacher and every student comes from a lineage.</p>
-
-      <h2>Strategy</h2>
-      <p>Three steps, from curious to committed:</p>
-      <ol>
-        <li><strong>Membership:</strong> low-cost monthly access, with a free trial and a free tier.</li>
-        <li><strong>Courses:</strong> deeper learning for people who want more.</li>
-        <li><strong>Prana Life:</strong> a yearlong membership for the most dedicated.</li>
-      </ol>
-      <h3>Who it&#8217;s for</h3>
-      <ul class="tag-list">
-        <li>Established Practitioner</li>
-        <li>Burnout Seeker</li>
-        <li>Conscious Media Consumer</li>
-        <li>Ayurveda Adjacent</li>
-        <li>Tradition Holder</li>
-      </ul>
-      <h3>What&#8217;s on it</h3>
-      <ul class="tag-list">
-        <li>Documentaries &amp; stories</li>
-        <li>Podcasts</li>
-        <li>Practices with teachers</li>
-        <li>Courses</li>
-        <li>Prana Life</li>
-      </ul>
-
-      <h2>Experience design</h2>
-      <p>The old app hid free content in a &#8220;Free Videos&#8221; section, so free users felt like second-class visitors. In Lineage, <strong>everyone sees everything, and access is checked only when you press play.</strong></p>
-      <ul>
-        <li>Green, amber, and grey dots mark free, trial, and paid titles.</li>
-        <li>The paywall became the <strong>Threshold</strong>: an invitation to go deeper, not a wall.</li>
-      </ul>
-
-      <h2>Deliverables</h2>
-      <ul>
-        <li>Brand guide and UX copy system</li>
-        <li>Rebrand and UX audit of every feature, prioritized P1 to P3</li>
-        <li>Three-phase launch plan</li>
-        <li>Clickable prototypes, including the onboarding above</li>
-        <li>Pitch deck for leadership</li>
-      </ul>
-      <!-- PLACEHOLDER: replace with brand visuals / audit excerpts once assets are provided -->
-      <div class="placeholder-grid wide">
-        <div class="placeholder wide">[ placeholder ]<br>brand guide visual</div>
-        <div class="placeholder wide">[ placeholder ]<br>rebrand audit excerpt</div>
-      </div>
-
-      <h2>Outcome</h2>
-      <p>I pitched it to leadership. The company didn&#8217;t have the systems to make a change this big, so it wasn&#8217;t built, and I left soon after.</p>
-      <p>What I took from it: a brand strategy only works if the organization can deliver it. Now I check that before I recommend a direction.</p>
-    `
   },
 
   /* ---- PHOTO ---- */
@@ -1046,20 +1033,29 @@ function load(id) {
       if (vid) vid.play().catch(() => {});
     };
 
-    if (p.caseStudy) {
+    if (p.prototype) {
       detail.innerHTML = `
         <h1>${p.title}</h1>
         <p class="dek">${p.dek}</p>
         <div class="meta">${p.meta}</div>
         <p class="concept-label">${p.concept}</p>
-        ${p.prototype ? `<figure class="prototype">
-          <iframe src="${p.prototype.src}" title="${p.title} clickable prototype" loading="lazy"></iframe>
+        <p class="try-label"><span class="try-dot" aria-hidden="true"></span>${p.prototype.intro}</p>
+        <figure class="prototype">
+          <div class="prototype-frame">
+            <iframe src="${p.prototype.src}" title="${p.title} interactive prototype" loading="lazy"></iframe>
+            <span class="try-chip" aria-hidden="true">Tap to try it</span>
+          </div>
           <figcaption class="embed-caption">${p.prototype.caption} <a href="${p.prototype.src}" target="_blank" rel="noopener">Open full screen</a></figcaption>
-        </figure>` : ""}
-        <div class="article-body case-body">${p.caseStudy}</div>
-        <button class="case-back" type="button">&larr; back to all work</button>
+        </figure>
       `;
-      detail.querySelector(".case-back").addEventListener("click", () => goHome());
+      // Hide the "tap to try" chip once someone interacts with the prototype.
+      const frame = detail.querySelector(".prototype iframe");
+      const chip = detail.querySelector(".try-chip");
+      const hideChip = () => chip.classList.add("gone");
+      frame.addEventListener("load", () => {
+        try { frame.contentWindow.addEventListener("pointerdown", hideChip, { once: true }); } catch (e) {}
+      });
+      window.addEventListener("blur", () => { if (document.activeElement === frame) hideChip(); });
       detail.classList.remove("loading");
     } else if (p.article) {
       detail.innerHTML = `
