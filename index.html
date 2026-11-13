@@ -212,6 +212,8 @@ a.featured-title { display: inline-block; }
 }
 .index .back:hover, #aboutBackBtn:hover { color: var(--text-strong); }
 
+.panel-close { display: none; }
+
 .detail { max-width: 720px; transition: opacity 0.15s; }
 .detail.loading { opacity: 0.3; }
 
@@ -593,6 +595,46 @@ footer {
   .about-body, .music-body { flex-direction: column; }
   .about-photo, .section-photo { max-width: 100%; width: 260px; }
   footer { margin-top: 48px; }
+
+  /* project media slides in from the right as its own panel */
+  .detail-panel {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    background: var(--bg);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 20px 64px;
+    transform: translateX(100%);
+    visibility: hidden;
+    box-shadow: -12px 0 32px rgba(0, 0, 0, 0.08);
+    transition: transform 0.38s cubic-bezier(0.22, 0.8, 0.24, 1), visibility 0s linear 0.38s;
+  }
+  .detail-panel.open {
+    transform: none;
+    visibility: visible;
+    transition: transform 0.38s cubic-bezier(0.22, 0.8, 0.24, 1), visibility 0s;
+  }
+  .panel-close {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    width: calc(100% + 40px);
+    margin: 0 -20px 28px;
+    padding: 24px 20px 14px;
+    background: var(--bg);
+    border: none;
+    border-bottom: 1px solid var(--cell);
+    font-family: inherit;
+    font-size: 12px;
+    color: var(--text-faint);
+    text-align: left;
+    cursor: pointer;
+  }
+  .panel-close:hover, .panel-close:focus-visible { color: var(--text-strong); }
+  body.panel-open { overflow: hidden; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -636,7 +678,10 @@ footer {
       <ul id="projectList"></ul>
       <div><button class="back" id="backBtn">&larr; back</button></div>
     </nav>
-    <main class="detail" id="detail"></main>
+    <div class="detail-panel" id="detailPanel">
+      <button class="panel-close" id="panelClose" type="button">&larr; all work</button>
+      <main class="detail" id="detail"></main>
+    </div>
   </div>
 </section>
 
@@ -940,6 +985,48 @@ const workSection = document.getElementById("work");
 const list = document.getElementById("projectList");
 const detail = document.getElementById("detail");
 const catLabel = document.getElementById("catLabel");
+const detailPanel = document.getElementById("detailPanel");
+const mobileQuery = window.matchMedia("(max-width: 760px)");
+let panelClearTimer = null;
+
+function openPanel() {
+  clearTimeout(panelClearTimer);
+  if (!mobileQuery.matches) return;
+  detailPanel.scrollTop = 0;
+  detailPanel.classList.add("open");
+  document.body.classList.add("panel-open");
+}
+
+function closePanel() {
+  if (!detailPanel.classList.contains("open")) return;
+  detailPanel.classList.remove("open");
+  document.body.classList.remove("panel-open");
+  document.querySelectorAll(".index button[data-id]").forEach(b => b.classList.remove("active"));
+  // stop any playing media, then clear it once the panel has slid away
+  detail.querySelectorAll("video, audio").forEach(m => m.pause());
+  panelClearTimer = setTimeout(() => { detail.innerHTML = ""; }, 400);
+}
+
+document.getElementById("panelClose").addEventListener("click", closePanel);
+document.addEventListener("keydown", e => { if (e.key === "Escape") closePanel(); });
+mobileQuery.addEventListener("change", e => {
+  if (!e.matches) document.body.classList.remove("panel-open");
+  else if (detailPanel.classList.contains("open")) document.body.classList.add("panel-open");
+});
+
+// swipe right to close the panel
+let swipeX = null, swipeY = null;
+detailPanel.addEventListener("touchstart", e => {
+  const t = e.touches[0];
+  swipeX = t.clientX; swipeY = t.clientY;
+}, { passive: true });
+detailPanel.addEventListener("touchend", e => {
+  if (swipeX === null) return;
+  const t = e.changedTouches[0];
+  const dx = t.clientX - swipeX, dy = t.clientY - swipeY;
+  swipeX = swipeY = null;
+  if (dx > 90 && Math.abs(dy) < dx * 0.5) closePanel();
+}, { passive: true });
 
 const FEATURED_PROJECT_IDS = FEATURED
   .filter(f => f.type === "reel" || f.type === "project")
@@ -979,6 +1066,7 @@ function setDocMeta(title, desc) {
 
 function goHome(push = true) {
   setDocMeta();
+  closePanel();
   workSection.style.display = "none";
   aboutSection.style.display = "none";
   landing.style.display = "";
@@ -989,6 +1077,7 @@ function goHome(push = true) {
 
 function openAbout(push = true) {
   setDocMeta();
+  closePanel();
   landing.style.display = "none";
   workSection.style.display = "none";
   aboutSection.style.display = "block";
@@ -1015,6 +1104,7 @@ function load(id) {
     b.classList.toggle("active", b.dataset.id === id));
 
   detail.classList.add("loading");
+  openPanel();
 
   setTimeout(() => {
     const videoHTML = (p.youtube ? `
